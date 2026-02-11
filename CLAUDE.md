@@ -25,16 +25,34 @@ La reponse contient :
 - `semanticData.KW_complementaires` : mots-cles secondaires a integrer si pertinent
 - `semanticData.recommended_words` : nombre de mots recommande
 - `serpData.organicResults` : top 10 SERP avec structure Hn des concurrents
-- `contentPlan.sections` : plan de contenu suggere avec H2/H3
+- `contentPlan.sections` : plan de contenu suggere avec H2/H3 — **c'est un minimum, pas un maximum**. Le plan du brief est une base de depart : ajouter des sections supplementaires si le sujet le justifie, si la recherche Tavily revele des angles non couverts, ou si l'expertise du redacteur le permet. Ne jamais se limiter au plan du brief quand on peut faire mieux.
 - `contentPlan.h1` : titre H1 suggere
 - `contentAnalysis.writingStyle` : ton et style recommandes
 - `seoMetadata` : slug, title, metaDescription suggeres
 
-**Etape 2 : Generer l'image hero de l'article**
+**Etape 2 : Recherche factuelle via Tavily**
+
+Appeler l'API Tavily pour obtenir des donnees recentes, des chiffres verifies et des sources citables :
+
+```bash
+cat > /tmp/tavily_req.json << 'EOF'
+{"api_key": "TAVILY_API_KEY_FROM_ENV", "query": "REQUETE_DE_RECHERCHE", "search_depth": "advanced", "max_results": 5, "include_answer": true}
+EOF
+curl -s -X POST "https://api.tavily.com/search" -H "Content-Type: application/json" -d @/tmp/tavily_req.json | jq .
+```
+
+La cle API est dans `site/.env` sous `TAVILY_API_KEY`. La reponse contient :
+- `answer` : synthese directe de la recherche
+- `results[].title` / `results[].url` : sources citables
+- `results[].content` : extraits de contenu avec donnees factuelles
+
+Utiliser ces donnees pour enrichir l'article avec des chiffres a jour (prix, stats, dates) et des faits verifies. Adapter la requete au sujet de l'article.
+
+**Etape 3 : Generer l'image hero de l'article**
 
 Chaque article DOIT avoir une image hero. Utiliser l'API fal.ai (voir section "Generation d'images" ci-dessous). Sauvegarder dans `site/public/images/blog/{slug}.webp` et referencer dans le frontmatter : `image: "/images/blog/{slug}.webp"`.
 
-**Etape 3 : Rediger en suivant le brief + les patterns anti-IA**
+**Etape 4 : Rediger en suivant le brief + les patterns anti-IA**
 
 **REGLE CRITIQUE : TOUJOURS ecrire avec les accents francais** (e, e, e, a, u, c, i, o, u). Un article sans accents est un article a refaire. Les seuls caracteres typographiques bannis sont les guillemets/apostrophes/tirets typographiques (voir ci-dessous), PAS les accents.
 
