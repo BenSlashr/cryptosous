@@ -321,6 +321,132 @@ export function getLinksForWalletPage(_walletSlug: string): LinkGroup[] {
   ];
 }
 
+// ── 7-8. Bitcoin hub & guide cross-links ─────────────────────
+
+/** 7. Bitcoin Hub → cours + exchanges + wallets + glossaire + outils */
+export function getLinksForBitcoinHub(): LinkGroup[] {
+  return [
+    {
+      title: 'Cours en direct',
+      links: [
+        { href: '/prix/bitcoin', label: 'Bitcoin' },
+        { href: '/prix/ethereum', label: 'Ethereum' },
+        { href: '/prix/solana', label: 'Solana' },
+        { href: '/prix/cardano', label: 'Cardano' },
+      ],
+    },
+    {
+      title: 'Ou acheter',
+      links: getTopExchanges(3).map(e => ({ href: `/plateformes/${e.slug}`, label: e.name })),
+    },
+    {
+      title: 'Stocker',
+      links: getTopWallets(2).map(w => ({ href: `/wallets/${w.slug}`, label: w.name })),
+    },
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/blockchain', label: 'Blockchain' },
+        { href: '/glossaire/halving', label: 'Halving' },
+        { href: '/glossaire/proof-of-stake', label: 'Proof of Stake' },
+      ],
+    },
+    {
+      title: 'Outils',
+      links: [
+        { href: '/outils/calculateur-dca', label: 'Calculateur DCA' },
+        { href: '/outils/convertisseur', label: 'Convertisseur' },
+      ],
+    },
+  ];
+}
+
+const BITCOIN_BRANCH_LINKS: Record<string, LinkGroup[]> = {
+  acheter: [
+    {
+      title: 'Plateformes',
+      links: getTopExchanges(3).map(e => ({ href: `/plateformes/${e.slug}`, label: e.name })),
+    },
+  ],
+  portefeuilles: [
+    {
+      title: 'Wallets',
+      links: getTopWallets(2).map(w => ({ href: `/wallets/${w.slug}`, label: w.name })),
+    },
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/wallet', label: 'Wallet' },
+        { href: '/glossaire/seed-phrase', label: 'Seed phrase' },
+      ],
+    },
+  ],
+  investir: [
+    {
+      title: 'Outils',
+      links: [
+        { href: '/outils/calculateur-dca', label: 'Calculateur DCA' },
+        { href: '/prix/bitcoin', label: 'Prix Bitcoin' },
+      ],
+    },
+    {
+      title: 'Plateformes',
+      links: getTopExchanges(3).map(e => ({ href: `/plateformes/${e.slug}`, label: e.name })),
+    },
+  ],
+  fonctionnement: [
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/blockchain', label: 'Blockchain' },
+        { href: '/glossaire/halving', label: 'Halving' },
+        { href: '/glossaire/proof-of-stake', label: 'Proof of Stake' },
+      ],
+    },
+  ],
+  securite: [
+    {
+      title: 'Wallets',
+      links: getTopWallets(2).map(w => ({ href: `/wallets/${w.slug}`, label: w.name })),
+    },
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/wallet', label: 'Wallet' },
+        { href: '/glossaire/seed-phrase', label: 'Seed phrase' },
+      ],
+    },
+  ],
+};
+
+/** 8. Bitcoin Guide → contextual by branch + always hub + outils */
+export function getLinksForBitcoinGuide(branch: string): LinkGroup[] {
+  const groups: LinkGroup[] = [];
+
+  const branchLinks = BITCOIN_BRANCH_LINKS[branch];
+  if (branchLinks) {
+    groups.push(...branchLinks);
+  }
+
+  groups.push({
+    title: 'Guide Bitcoin',
+    links: [{ href: '/bitcoin', label: 'Hub Bitcoin' }],
+  });
+
+  // Avoid duplicate outils if branch already added them
+  if (branch !== 'investir') {
+    groups.push({
+      title: 'Outils',
+      links: [
+        { href: '/outils/calculateur-dca', label: 'Calculateur DCA' },
+        { href: '/outils/convertisseur', label: 'Convertisseur' },
+      ],
+    });
+  }
+
+  return groups;
+}
+
 // ── autoLink — liens in-text dans le contenu éditorial ─────
 
 interface TermEntry {

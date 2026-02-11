@@ -1,0 +1,109 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import BitcoinHub from '@/components/bitcoin/BitcoinHub.astro';
+import BitcoinGuide from '@/components/bitcoin/BitcoinGuide.astro';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPages = await getCollection('bitcoin');
+  return allPages.map((entry) => {
+    let slug = entry.id;
+    if (slug === 'index') slug = '';
+    else if (slug.endsWith('/index')) slug = slug.slice(0, -'/index'.length);
+    return {
+      params: { slug: slug || undefined },
+      props: { entry, allPages },
+    };
+  });
+}
+
+interface Props {
+  entry: CollectionEntry<'bitcoin'>;
+  allPages: CollectionEntry<'bitcoin'>[];
+}
+
+const { entry, allPages } = Astro.props;
+const { Content, headings } = await render(entry);
+---
+
+<BaseLayout
+  title={`${entry.data.title} | CryptoSous`}
+  description={entry.data.description}
+  ogImage={entry.data.image}
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    {entry.data.type === 'hub' ? (
+      <BitcoinHub entry={entry} allPages={allPages}>
+        <Content />
+      </BitcoinHub>
+    ) : (
+      <BitcoinGuide entry={entry} allPages={allPages} headings={headings}>
+        <Content />
+      </BitcoinGuide>
+    )}
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  .prose-custom h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-h3);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-primary);
+  }
+  .prose-custom h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-primary);
+  }
+  .prose-custom p {
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .prose-custom strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .prose-custom a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-custom a:hover {
+    color: var(--color-gold-light);
+  }
+  .prose-custom ul, .prose-custom ol {
+    color: var(--color-text-secondary);
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .prose-custom li {
+    margin-bottom: 0.5rem;
+    line-height: 1.75;
+  }
+  .prose-custom blockquote {
+    border-left: 3px solid var(--color-gold);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+  .prose-custom hr {
+    border-color: var(--color-border);
+    margin: 2rem 0;
+  }
+</style>

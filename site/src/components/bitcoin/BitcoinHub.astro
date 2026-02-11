@@ -1,0 +1,133 @@
+---
+import CrossLinks from '@/components/CrossLinks.astro';
+import { getLinksForBitcoinHub } from '@/data/internal-links';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'bitcoin'>;
+  allPages: CollectionEntry<'bitcoin'>[];
+}
+
+function entryIdToSlug(id: string): string {
+  if (id === 'index') return '';
+  if (id.endsWith('/index')) return id.slice(0, -'/index'.length);
+  return id;
+}
+
+const { entry, allPages } = Astro.props;
+const currentSlug = entryIdToSlug(entry.id);
+const isRoot = currentSlug === '';
+
+// Children: for root hub, show branch hubs (parent null, type hub, not self)
+// For branch hub, show pages whose parent matches this hub's slug
+let children: CollectionEntry<'bitcoin'>[];
+if (isRoot) {
+  children = allPages
+    .filter(p => p.id !== 'index' && p.data.parent === null && p.data.type === 'hub')
+    .sort((a, b) => a.data.order - b.data.order);
+} else {
+  children = allPages
+    .filter(p => p.data.parent === currentSlug)
+    .sort((a, b) => a.data.order - b.data.order);
+}
+
+// Breadcrumb
+const crumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Bitcoin', href: '/bitcoin' },
+];
+if (!isRoot) {
+  crumbs.push({ label: entry.data.title, href: `/bitcoin/${currentSlug}` });
+}
+
+// Schema.org
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    item: `https://crypto-sous.fr${c.href}`,
+  })),
+};
+
+const collectionPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: entry.data.title,
+  description: entry.data.description,
+  url: `https://crypto-sous.fr/bitcoin/${currentSlug}`,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'CryptoSous',
+    url: 'https://crypto-sous.fr',
+  },
+};
+
+const crossLinks = getLinksForBitcoinHub();
+---
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-sm text-text-muted mb-8 flex-wrap" aria-label="Fil d'ariane">
+    {crumbs.map((crumb, i) => (
+      <>
+        {i > 0 && <span>/</span>}
+        {i < crumbs.length - 1 ? (
+          <a href={crumb.href} class="hover:text-gold transition-colors cursor-pointer">{crumb.label}</a>
+        ) : (
+          <span class="text-text-secondary">{crumb.label}</span>
+        )}
+      </>
+    ))}
+  </nav>
+
+  <!-- Hero -->
+  <header class="mb-10">
+    <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+      {entry.data.title}
+    </h1>
+    <p class="text-body-lg text-text-secondary leading-relaxed">
+      {entry.data.description}
+    </p>
+  </header>
+
+  <!-- Markdown content (slot) -->
+  <div class="prose-custom mb-12">
+    <slot />
+  </div>
+
+  <!-- Children grid -->
+  {children.length > 0 && (
+    <section class="mb-12">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {children.map((child) => {
+          const childSlug = entryIdToSlug(child.id);
+          return (
+            <a
+              href={`/bitcoin/${childSlug}`}
+              class="group block p-5 rounded-card border border-border bg-surface-raised/30 hover:border-gold/50 transition-all duration-200 cursor-pointer"
+            >
+              <h3 class="font-display font-700 text-base mb-2 group-hover:text-gold transition-colors">
+                {child.data.title}
+              </h3>
+              <p class="text-sm text-text-secondary line-clamp-2">
+                {child.data.description}
+              </p>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  <!-- Cross-links -->
+  <section class="mb-12">
+    <CrossLinks groups={crossLinks} />
+  </section>
+</div>
+
+<!-- Schema.org -->
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(collectionPageSchema)} />

@@ -1,0 +1,221 @@
+---
+import CrossLinks from '@/components/CrossLinks.astro';
+import TableOfContents from '@/components/bitcoin/TableOfContents.astro';
+import { getLinksForBitcoinGuide } from '@/data/internal-links';
+import type { CollectionEntry } from 'astro:content';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  entry: CollectionEntry<'bitcoin'>;
+  allPages: CollectionEntry<'bitcoin'>[];
+  headings: Heading[];
+}
+
+function entryIdToSlug(id: string): string {
+  if (id === 'index') return '';
+  if (id.endsWith('/index')) return id.slice(0, -'/index'.length);
+  return id;
+}
+
+const { entry, allPages, headings } = Astro.props;
+const currentSlug = entryIdToSlug(entry.id);
+
+// Resolve parent
+const parentPage = entry.data.parent
+  ? allPages.find(p => entryIdToSlug(p.id) === entry.data.parent)
+  : null;
+
+// Breadcrumb
+const crumbs: Array<{ label: string; href: string }> = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Bitcoin', href: '/bitcoin' },
+];
+if (parentPage) {
+  const parentSlug = entryIdToSlug(parentPage.id);
+  crumbs.push({ label: parentPage.data.title, href: `/bitcoin/${parentSlug}` });
+}
+crumbs.push({ label: entry.data.title, href: `/bitcoin/${currentSlug}` });
+
+// Siblings: same parent + branch + type guide, excluding self
+const siblings = allPages
+  .filter(p =>
+    p.id !== entry.id &&
+    p.data.type === 'guide' &&
+    p.data.branch === entry.data.branch &&
+    p.data.parent === entry.data.parent
+  )
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Formatted date
+const formattedDate = entry.data.pubDate
+  ? new Date(entry.data.pubDate).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })
+  : null;
+
+// Branch labels for badge
+const branchLabels: Record<string, string> = {
+  acheter: 'Acheter',
+  vendre: 'Vendre',
+  fonctionnement: 'Fonctionnement',
+  lightning: 'Lightning',
+  portefeuilles: 'Portefeuilles',
+  minage: 'Minage',
+  securite: 'Securite',
+  investir: 'Investir',
+  reglementation: 'Reglementation',
+  histoire: 'Histoire',
+  apprendre: 'Apprendre',
+  standalone: 'Bitcoin',
+};
+
+// Schema.org
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    item: `https://crypto-sous.fr${c.href}`,
+  })),
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: entry.data.title,
+  description: entry.data.description,
+  ...(entry.data.pubDate && { datePublished: new Date(entry.data.pubDate).toISOString() }),
+  author: { '@type': 'Organization', name: 'CryptoSous' },
+  publisher: { '@type': 'Organization', name: 'CryptoSous', url: 'https://crypto-sous.fr' },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `https://crypto-sous.fr/bitcoin/${currentSlug}`,
+  },
+};
+
+const crossLinks = getLinksForBitcoinGuide(entry.data.branch);
+const showToc = headings.filter(h => h.depth === 2 || h.depth === 3).length >= 3;
+---
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-sm text-text-muted mb-8 flex-wrap" aria-label="Fil d'ariane">
+    {crumbs.map((crumb, i) => (
+      <>
+        {i > 0 && <span>/</span>}
+        {i < crumbs.length - 1 ? (
+          <a href={crumb.href} class="hover:text-gold transition-colors cursor-pointer">{crumb.label}</a>
+        ) : (
+          <span class="text-text-secondary">{crumb.label}</span>
+        )}
+      </>
+    ))}
+  </nav>
+
+  <!-- Header -->
+  <header class="mb-10">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="px-2.5 py-0.5 text-xs font-semibold bg-violet/10 text-violet-light rounded-full border border-violet/20">
+        {branchLabels[entry.data.branch] || entry.data.branch}
+      </span>
+      {entry.data.readingTime && (
+        <span class="text-xs text-text-muted">{entry.data.readingTime} de lecture</span>
+      )}
+    </div>
+
+    <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+      {entry.data.title}
+    </h1>
+
+    <p class="text-body-lg text-text-secondary leading-relaxed mb-6">
+      {entry.data.description}
+    </p>
+
+    {formattedDate && (
+      <div class="flex items-center gap-4 text-sm text-text-muted border-t border-border pt-4">
+        <time datetime={entry.data.pubDate!.toISOString()}>{formattedDate}</time>
+      </div>
+    )}
+  </header>
+
+  <!-- Hero image -->
+  {entry.data.image && (
+    <div class="mb-10 rounded-card overflow-hidden border border-border">
+      <img
+        src={entry.data.image}
+        alt={entry.data.title}
+        class="w-full h-auto object-cover aspect-video"
+        loading="eager"
+      />
+    </div>
+  )}
+
+  <!-- Content + TOC grid -->
+  <div class={showToc ? 'lg:grid lg:grid-cols-[1fr_220px] lg:gap-8' : ''}>
+    <article class="prose-custom">
+      <slot />
+    </article>
+
+    {showToc && (
+      <aside>
+        <TableOfContents headings={headings} />
+      </aside>
+    )}
+  </div>
+
+  <!-- Sibling pages -->
+  {siblings.length > 0 && (
+    <section class="mt-12">
+      <h2 class="font-display font-700 text-lg mb-4 text-text-primary">Pages liees</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {siblings.map((sib) => {
+          const sibSlug = entryIdToSlug(sib.id);
+          return (
+            <a
+              href={`/bitcoin/${sibSlug}`}
+              class="group block p-4 rounded-card border border-border bg-surface-raised/30 hover:border-gold/50 transition-all duration-200 cursor-pointer"
+            >
+              <p class="font-medium text-sm group-hover:text-gold transition-colors">{sib.data.title}</p>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  <!-- Back to parent -->
+  {parentPage && (
+    <div class="mt-6">
+      <a
+        href={`/bitcoin/${entryIdToSlug(parentPage.id)}`}
+        class="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-gold transition-colors cursor-pointer"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Retour a {parentPage.data.title}
+      </a>
+    </div>
+  )}
+
+  <!-- Cross-links -->
+  <section class="mt-12">
+    <CrossLinks groups={crossLinks} />
+  </section>
+
+  <!-- Disclaimer -->
+  <div class="mt-8 p-4 rounded-card border border-border bg-surface-raised/20">
+    <p class="text-xs text-text-muted leading-relaxed">
+      Cet article est publie a titre informatif. Il ne constitue pas un conseil en investissement. Les cryptomonnaies sont des actifs volatils. Faites vos propres recherches avant toute decision financiere.
+    </p>
+  </div>
+</div>
+
+<!-- Schema.org -->
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
