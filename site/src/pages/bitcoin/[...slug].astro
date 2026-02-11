@@ -3,6 +3,7 @@ import '@/styles/global.css';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
+import BitcoinHubRoot from '@/components/bitcoin/BitcoinHubRoot.astro';
 import BitcoinHub from '@/components/bitcoin/BitcoinHub.astro';
 import BitcoinGuide from '@/components/bitcoin/BitcoinGuide.astro';
 import { getCollection, render } from 'astro:content';
@@ -28,6 +29,7 @@ interface Props {
 
 const { entry, allPages } = Astro.props;
 const { Content, headings } = await render(entry);
+const isRootHub = entry.id === 'index';
 ---
 
 <BaseLayout
@@ -38,7 +40,11 @@ const { Content, headings } = await render(entry);
   <Navbar />
 
   <main class="pt-32 pb-16">
-    {entry.data.type === 'hub' ? (
+    {isRootHub ? (
+      <BitcoinHubRoot entry={entry} allPages={allPages}>
+        <Content />
+      </BitcoinHubRoot>
+    ) : entry.data.type === 'hub' ? (
       <BitcoinHub entry={entry} allPages={allPages}>
         <Content />
       </BitcoinHub>

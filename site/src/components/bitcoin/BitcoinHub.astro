@@ -16,29 +16,19 @@ function entryIdToSlug(id: string): string {
 
 const { entry, allPages } = Astro.props;
 const currentSlug = entryIdToSlug(entry.id);
-const isRoot = currentSlug === '';
+const month = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 
-// Children: for root hub, show branch hubs (parent null, type hub, not self)
-// For branch hub, show pages whose parent matches this hub's slug
-let children: CollectionEntry<'bitcoin'>[];
-if (isRoot) {
-  children = allPages
-    .filter(p => p.id !== 'index' && p.data.parent === null && p.data.type === 'hub')
-    .sort((a, b) => a.data.order - b.data.order);
-} else {
-  children = allPages
-    .filter(p => p.data.parent === currentSlug)
-    .sort((a, b) => a.data.order - b.data.order);
-}
+// Children of this branch hub
+const children = allPages
+  .filter(p => p.data.parent === currentSlug)
+  .sort((a, b) => a.data.order - b.data.order);
 
 // Breadcrumb
 const crumbs = [
   { label: 'Accueil', href: '/' },
   { label: 'Bitcoin', href: '/bitcoin' },
+  { label: entry.data.title, href: `/bitcoin/${currentSlug}` },
 ];
-if (!isRoot) {
-  crumbs.push({ label: entry.data.title, href: `/bitcoin/${currentSlug}` });
-}
 
 // Schema.org
 const breadcrumbSchema = {
@@ -58,11 +48,7 @@ const collectionPageSchema = {
   name: entry.data.title,
   description: entry.data.description,
   url: `https://crypto-sous.fr/bitcoin/${currentSlug}`,
-  isPartOf: {
-    '@type': 'WebSite',
-    name: 'CryptoSous',
-    url: 'https://crypto-sous.fr',
-  },
+  isPartOf: { '@type': 'WebSite', name: 'CryptoSous', url: 'https://crypto-sous.fr' },
 };
 
 const crossLinks = getLinksForBitcoinHub();
@@ -84,21 +70,27 @@ const crossLinks = getLinksForBitcoinHub();
   </nav>
 
   <!-- Hero -->
-  <header class="mb-10">
+  <header class="mb-12">
     <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
       {entry.data.title}
     </h1>
-    <p class="text-body-lg text-text-secondary leading-relaxed">
+    <p class="text-body-lg text-text-secondary max-w-2xl">
       {entry.data.description}
     </p>
+    <div class="mt-3">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs border border-border text-text-muted">
+        <span class="w-1.5 h-1.5 rounded-full bg-positive animate-pulse"></span>
+        Mis à jour en {month}
+      </span>
+    </div>
   </header>
 
-  <!-- Markdown content (slot) -->
+  <!-- Markdown content -->
   <div class="prose-custom mb-12">
     <slot />
   </div>
 
-  <!-- Children grid -->
+  <!-- Child cards -->
   {children.length > 0 && (
     <section class="mb-12">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -107,14 +99,19 @@ const crossLinks = getLinksForBitcoinHub();
           return (
             <a
               href={`/bitcoin/${childSlug}`}
-              class="group block p-5 rounded-card border border-border bg-surface-raised/30 hover:border-gold/50 transition-all duration-200 cursor-pointer"
+              class="group flex flex-col p-5 rounded-xl border border-border bg-surface-raised/30 hover:border-gold/50 hover:bg-surface-hover transition-all duration-200 cursor-pointer"
             >
-              <h3 class="font-display font-700 text-base mb-2 group-hover:text-gold transition-colors">
+              <h3 class="font-display font-700 text-base mb-2 text-text-primary group-hover:text-gold transition-colors">
                 {child.data.title}
               </h3>
-              <p class="text-sm text-text-secondary line-clamp-2">
+              <p class="text-sm text-text-secondary line-clamp-2 flex-1 mb-3">
                 {child.data.description}
               </p>
+              <div class="flex items-center justify-end">
+                <svg class="w-4 h-4 text-text-muted group-hover:text-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
             </a>
           );
         })}
@@ -122,12 +119,17 @@ const crossLinks = getLinksForBitcoinHub();
     </section>
   )}
 
-  <!-- Cross-links -->
+  <!-- Cross-linking -->
   <section class="mb-12">
-    <CrossLinks groups={crossLinks} />
+    <h2 class="font-display font-700 text-h2 mb-6">Ressources complémentaires</h2>
+    <CrossLinks groups={crossLinks} title="Explorer aussi" />
   </section>
+
+  <!-- Disclaimer -->
+  <div class="p-5 rounded-card border border-border bg-surface/50 text-xs text-text-muted leading-relaxed">
+    <strong class="text-text-secondary">Avertissement :</strong> Les cryptomonnaies sont des actifs volatils. Investir comporte des risques de perte en capital. Ce guide ne constitue pas un conseil en investissement. Faites vos propres recherches (DYOR).
+  </div>
 </div>
 
-<!-- Schema.org -->
 <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 <script type="application/ld+json" set:html={JSON.stringify(collectionPageSchema)} />
