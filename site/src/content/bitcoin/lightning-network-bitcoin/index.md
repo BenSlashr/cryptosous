@@ -54,6 +54,9 @@ Pour utiliser le Lightning Network, vous avez besoin d'un wallet compatible. Plu
 
 Le choix dépend de votre priorité : contrôle total sur vos clés (Phoenix, Breez) ou simplicité maximale (Wallet of Satoshi, Blink).
 
+> [!NOTE]
+> Un wallet custodial garde vos clés privées sur les serveurs de l'opérateur. Pratique pour débuter avec de petits montants, mais moins sécurisé qu'un wallet non-custodial où vous seul contrôlez vos fonds.
+
 ## Envoyer votre premier paiement Lightning
 
 Vous voulez tester par vous-même ? Avec Phoenix Wallet, quatre étapes suffisent.
@@ -66,6 +69,9 @@ Vous voulez tester par vous-même ? Avec Phoenix Wallet, quatre étapes suffisen
 
 **4. Confirmer le paiement.** Appuyez sur "Payer". Le règlement prend entre 1 et 3 secondes. Vous recevez une confirmation instantanée. C'est fait.
 
+> [!TIP]
+> Phoenix reste le wallet le plus simple pour débuter. La gestion des canaux est entièrement automatisée et vous gardez le contrôle de vos clés.
+
 Les frais de routage sur Lightning sont de l'ordre de quelques satoshis - souvent moins d'un centime d'euro. Phoenix facture aussi des frais de service minimes pour la gestion automatique des canaux.
 
 ## Cas d'usage concrets
@@ -73,6 +79,9 @@ Les frais de routage sur Lightning sont de l'ordre de quelques satoshis - souven
 Le Lightning Network n'est pas qu'une curiosité technique. Plusieurs usages se sont développés depuis son lancement.
 
 **Micropaiements** : envoyer 50 satoshis (quelques centimes) est possible sur Lightning, alors que c'est économiquement absurde on-chain. Cela ouvre la porte aux pourboires en ligne, aux paiements à la seconde pour du streaming, et aux jeux qui récompensent en sats.
+
+> [!TIP]
+> Lightning excelle pour les micropaiements et les pourboires. Vous pouvez envoyer quelques centimes à un créateur de contenu sans frais prohibitifs.
 
 **Commerce** : des milliers de commerçants acceptent les paiements Lightning via des processeurs comme BTCPay Server, CoinGate ou Ibex. En Thaïlande, une application permet à tous les commerces du pays d'accepter Bitcoin via Lightning. En France, quelques commerçants testent aussi cette option.
 
@@ -124,6 +133,9 @@ Les watchtowers résolvent le problème du "vous devez être en ligne pour surve
 
 ### Sauvegarder vos canaux
 
+> [!WARNING]
+> Sauvegardez toujours l'état de vos canaux Lightning. Sans backup, perdre votre téléphone signifie perdre vos fonds.
+
 Perdre votre téléphone sans backup signifie perdre l'état de vos canaux Lightning. Contrairement au Bitcoin on-chain où votre phrase de récupération suffit pour retrouver vos fonds, Lightning a besoin d'informations supplémentaires : l'état actuel de chaque canal. Phoenix et la plupart des wallets modernes sauvegardent ces données automatiquement (chiffrées, dans le cloud). Vérifiez que cette option est activée dans votre wallet.
 
 ### Centralisation du réseau de routage
@@ -157,6 +169,9 @@ Les LSP (Lightning Service Providers) sont des fournisseurs de liquidité qui ou
 Depuis début 2025, le protocole Taproot Assets permet d'envoyer des actifs autres que le BTC via Lightning. L'usage le plus attendu : les stablecoins. Tether (USDT) peut circuler sur Lightning, ce qui ouvre la porte à des paiements en dollars quasi instantanés et quasi gratuits, réglés par l'infrastructure Bitcoin. Pour les envois de fonds internationaux, c'est un concurrent direct des services comme Western Union.
 
 ## Les limites actuelles
+
+> [!IMPORTANT]
+> Pour recevoir des paiements sur Lightning, vous devez disposer de liquidité entrante dans vos canaux. Les wallets modernes comme Phoenix gèrent cela automatiquement.
 
 Le Lightning Network progresse, mais des défis restent. La gestion de la liquidité dans les canaux est technique : pour recevoir des paiements, vous devez avoir de la capacité entrante, ce qui n'est pas toujours intuitif. Le nombre de noeuds publics a diminué depuis 2022, ce qui pose des questions sur la décentralisation du réseau de routage.
 

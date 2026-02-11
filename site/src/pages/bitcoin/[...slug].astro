@@ -112,4 +112,108 @@ const isRootHub = entry.id === 'index';
     border-color: var(--color-border);
     margin: 2rem 0;
   }
+
+  /* GitHub-style callout alerts */
+  .prose-custom .markdown-alert {
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0.75rem;
+    border-left: 4px solid;
+  }
+  .prose-custom .markdown-alert p {
+    margin-bottom: 0.25rem;
+  }
+  .prose-custom .markdown-alert p:last-child {
+    margin-bottom: 0;
+  }
+  .prose-custom .markdown-alert-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    margin-bottom: 0.5rem !important;
+  }
+  .prose-custom .markdown-alert-title .octicon {
+    flex-shrink: 0;
+  }
+
+  /* TIP — gold */
+  .prose-custom .markdown-alert-tip {
+    background: rgba(245, 158, 11, 0.06);
+    border-color: var(--color-gold);
+  }
+  .prose-custom .markdown-alert-tip .markdown-alert-title {
+    color: var(--color-gold);
+  }
+
+  /* NOTE — blue */
+  .prose-custom .markdown-alert-note {
+    background: rgba(59, 130, 246, 0.06);
+    border-color: #3b82f6;
+  }
+  .prose-custom .markdown-alert-note .markdown-alert-title {
+    color: #3b82f6;
+  }
+
+  /* WARNING — orange */
+  .prose-custom .markdown-alert-warning {
+    background: rgba(249, 115, 22, 0.06);
+    border-color: #f97316;
+  }
+  .prose-custom .markdown-alert-warning .markdown-alert-title {
+    color: #f97316;
+  }
+
+  /* CAUTION — red */
+  .prose-custom .markdown-alert-caution {
+    background: rgba(239, 68, 68, 0.06);
+    border-color: #ef4444;
+  }
+  .prose-custom .markdown-alert-caution .markdown-alert-title {
+    color: #ef4444;
+  }
+
+  /* IMPORTANT — violet */
+  .prose-custom .markdown-alert-important {
+    background: rgba(139, 92, 246, 0.06);
+    border-color: var(--color-violet);
+  }
+  .prose-custom .markdown-alert-important .markdown-alert-title {
+    color: var(--color-violet);
+  }
+
+  /* SVG icon fill inherits title color */
+  .prose-custom .markdown-alert-title .octicon path {
+    fill: currentColor;
+  }
+  .prose-custom table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    display: block;
+  }
+  .prose-custom thead {
+    background: rgba(245, 158, 11, 0.08);
+  }
+  .prose-custom th {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--color-gold);
+    white-space: nowrap;
+  }
+  .prose-custom td {
+    color: var(--color-text-secondary);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .prose-custom tbody tr:hover {
+    background: rgba(245, 158, 11, 0.04);
+  }
 </style>

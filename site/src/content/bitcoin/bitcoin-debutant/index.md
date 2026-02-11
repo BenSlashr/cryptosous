@@ -18,6 +18,9 @@ Contrairement à l'euro ou au dollar, Bitcoin n'est contrôlé par aucun gouvern
 
 Le nombre de bitcoins est limité à 21 millions - il n'y en aura jamais davantage. Cette rareté programmée est l'une des raisons pour lesquelles le prix du BTC a autant augmenté depuis sa création. Fin 2025, un bitcoin valait plus de 100 000 dollars, contre quelques centimes en 2009.
 
+> [!NOTE]
+> Le nombre de 21 millions est gravé dans le code de Bitcoin. Tous les 4 ans environ, la création de nouveaux BTC est divisée par deux lors du "halving". Le dernier bitcoin sera miné vers 2140.
+
 Bonne nouvelle : vous n'avez pas besoin d'acheter un bitcoin entier. L'unité se divise en 100 millions de satoshis. Vous pouvez commencer avec 10 ou 50 euros.
 
 ## Pourquoi autant de gens s'y intéressent
@@ -63,6 +66,9 @@ Par virement bancaire (souvent gratuit) ou par carte bancaire (des frais de 1 à
 
 Sélectionnez Bitcoin (BTC), indiquez le montant en euros et validez l'achat. C'est aussi simple que ça.
 
+> [!TIP]
+> Commencez avec une petite somme que vous pouvez vous permettre de perdre - entre 20 et 100 euros. Ça vous permet de tester la plateforme et de comprendre le processus sans stress.
+
 Comparez les frais avant de choisir votre plateforme. Sur un achat de 100 euros, la différence entre 0,5 % et 2 % de frais peut sembler faible - mais elle s'accumule si vous investissez régulièrement.
 
 ## Stocker et sécuriser ses bitcoins
@@ -73,6 +79,9 @@ L'alternative : transférer vos BTC vers un portefeuille personnel.
 
 - **Portefeuille logiciel (hot wallet)** : une application sur votre téléphone ou ordinateur. Gratuit et pratique, mais connecté à internet.
 - **Portefeuille matériel (cold wallet)** : un appareil physique type Ledger ou Trezor. Plus sûr car hors ligne. Recommandé au-dessus de quelques centaines d'euros.
+
+> [!CAUTION]
+> Ne prenez JAMAIS de photo de votre seed phrase. Ne la stockez pas sur votre téléphone ou dans un email. Ecrivez-la sur papier et rangez-la dans un endroit sûr. Quiconque possède cette phrase contrôle vos bitcoins.
 
 Dans tous les cas, notez votre seed phrase (la suite de 12 ou 24 mots qui donne accès à votre portefeuille). Sans elle, vos bitcoins sont perdus pour toujours.
 
@@ -133,9 +142,15 @@ La plupart des pertes en crypto ne viennent pas de la technologie, mais de mauva
 - **Suivre les "conseils" sur les réseaux sociaux.** Twitter, Telegram et YouTube regorgent de "gurus" qui promettent des gains faciles. La plupart cherchent à vendre leur propre formation ou à manipuler le prix d'un actif. Vérifiez toujours vos sources.
 - **Tout miser sur un seul achat.** Acheter pour 5 000 euros de Bitcoin d'un coup, c'est parier que le moment est le bon. Statistiquement, vous avez plus de chances de lisser votre risque avec des achats réguliers.
 
+> [!WARNING]
+> Aucune personne sérieuse ne vous contactera en message privé sur Twitter ou Telegram pour vous proposer un "plan d'investissement". Les arnaques crypto se multiplient - ignorez systématiquement ces messages.
+
 ### La stratégie DCA pour limiter le risque
 
 Plutôt que d'investir une grosse somme d'un coup, le DCA (Dollar-Cost Averaging) consiste à acheter un montant fixe à intervalles réguliers. Par exemple, 50 euros de Bitcoin chaque semaine. Cette méthode lisse votre prix d'achat et vous évite de tout miser au mauvais moment.
+
+> [!IMPORTANT]
+> Le DCA est la stratégie la plus simple pour démarrer : un montant fixe chaque semaine ou chaque mois, sans chercher à "timer" le marché. Plusieurs plateformes proposent des achats automatiques.
 
 ## Mini-lexique du débutant
 

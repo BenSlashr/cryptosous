@@ -48,6 +48,9 @@ Quand vous appuyez sur "Envoyer" dans votre wallet, votre transaction suit un ch
 
 Si votre transaction reste non confirmée pendant 14 jours, elle est automatiquement retirée de la mempool et les fonds reviennent disponibles dans votre portefeuille.
 
+> [!TIP]
+> Vous pouvez suivre en temps réel le statut de votre transaction via des explorateurs de blockchain comme Mempool.space ou Blockchain.com. Il suffit de coller l'identifiant de transaction (TXID) pour voir sa position dans la mempool et le nombre de confirmations.
+
 ## Le minage et la preuve de travail
 
 Le minage est le mécanisme qui sécurise le réseau et crée de nouveaux bitcoins. Les mineurs sont des ordinateurs spécialisés qui participent à une compétition : trouver un nombre (appelé "nonce") qui, combiné aux données du bloc, produit une empreinte numérique respectant certaines conditions de difficulté.
@@ -66,7 +69,13 @@ Tous les 210 000 blocs (environ quatre ans), la récompense des mineurs est divi
 
 Ce mécanisme contrôle la création monétaire de Bitcoin. Le nombre total de bitcoins est plafonné à 21 millions. Aujourd'hui, environ 19,8 millions de BTC sont déjà en circulation. Les derniers bitcoins seront minés vers 2140.
 
+> [!NOTE]
+> Le plafond de 21 millions est écrit dans le code source de Bitcoin. Le modifier nécessiterait le consensus de la majorité des noeuds du réseau - ce qui ne s'est jamais produit depuis 2009 et reste hautement improbable.
+
 Le halving a aussi un effet sur le prix. À chaque division de la récompense, l'offre de nouveaux bitcoins diminue. Si la demande reste stable ou augmente, le prix tend à monter - c'est ce que le marché a observé après chaque halving précédent.
+
+> [!IMPORTANT]
+> Historiquement, chaque halving a été suivi d'une hausse du prix dans les 12 à 18 mois. Le halving de 2012 a précédé un passage de 12$ à 1150$, celui de 2016 a précédé le bull run vers 20 000$, et celui de 2020 a précédé l'ATH de 69 000$ en 2021.
 
 ## Les noeuds : la colonne vertébrale du réseau
 
@@ -100,6 +109,9 @@ Bitcoin et Ethereum sont les deux plus grandes blockchains, mais elles n'ont pas
 ### Consensus : preuve de travail vs preuve d'enjeu
 
 Bitcoin utilise la preuve de travail (proof of work). Les mineurs dépensent de l'électricité pour sécuriser le réseau. C'est un choix délibéré : l'énergie physique consommée rend toute attaque très coûteuse.
+
+> [!NOTE]
+> Contrairement à Ethereum qui est passé au proof of stake, Bitcoin n'a aucun projet d'abandonner le proof of work. La communauté considère cette méthode comme la seule qui ancre la sécurité dans le monde physique plutôt que dans des incitations économiques.
 
 Ethereum est passé à la preuve d'enjeu (proof of stake) en septembre 2022. Les validateurs bloquent des ETH en garantie au lieu de miner. Ce changement a réduit la consommation énergétique d'Ethereum de plus de 99 %, mais la sécurité repose alors sur des incitations économiques plutôt que sur de l'énergie physique.
 
@@ -158,6 +170,9 @@ On entend parfois que Bitcoin pourrait être hacké. En pratique, le réseau lui
 ### Le coût d'une attaque 51 %
 
 Pour falsifier des transactions, un attaquant devrait contrôler plus de 50 % du hashrate mondial. Avec un réseau à plus de 800 EH/s, les estimations placent le coût d'une telle opération à environ 6 milliards de dollars - rien que pour le matériel. Il faudrait ajouter l'électricité, l'infrastructure et des années de préparation. Et même en cas de succès, l'attaque serait visible immédiatement par le réseau, déclenchant une chute du prix qui rendrait l'opération non rentable.
+
+> [!WARNING]
+> Une attaque 51% reste théoriquement possible, mais économiquement irrationnelle. Le coût pour contrôler 51% du hashrate dépasse largement le gain potentiel, surtout quand l'attaque ferait chuter le prix du BTC et détruirait la valeur des bitcoins volés.
 
 À titre de comparaison, les fraudes bancaires traditionnelles coûtent chaque année des dizaines de milliards de dollars au système financier mondial. Bitcoin n'a subi aucune fraude au niveau du protocole en plus de 15 ans d'existence.
 

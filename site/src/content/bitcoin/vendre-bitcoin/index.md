@@ -37,6 +37,9 @@ Vous fixez un prix cible avant d'acheter. Si vous avez acheté à 30 000 EUR et 
 
 Le DCA inversé applique le même principe que l'achat programmé, mais en sens contraire. Vous vendez une fraction de votre portefeuille à intervalles réguliers ou par paliers de prix. Par exemple : vendre 10 % de vos BTC tous les 20 % de hausse. Ou vendre 20 % à x2, 30 % à x5, et le reste à x10. Vous sécurisez des gains tout en gardant une exposition à la hausse.
 
+> [!TIP]
+> Vendre en plusieurs fois réduit le risque de regretter une vente trop tôt ou trop tard. Fixez vos paliers à l'avance et tenez-vous y.
+
 ### Rééquilibrage du portefeuille
 
 Si le bitcoin représente 50 % de votre patrimoine après une forte hausse, vous pouvez en vendre une partie pour retrouver une répartition équilibrée. La règle souvent citée : rééquilibrer quand la crypto dépasse 7 à 8 % du portefeuille global. Ce n'est pas un avis sur le cours - c'est de la gestion de risque.
@@ -123,7 +126,8 @@ Pour **envoyer** du bitcoin, vous avez besoin de l'adresse BTC du destinataire. 
 
 Pour **recevoir** du bitcoin, partagez votre propre adresse BTC (ou son QR code) à l'expéditeur. Les fonds apparaîtront dans votre portefeuille une fois la transaction confirmée sur la blockchain.
 
-Attention à toujours vérifier l'adresse avant d'envoyer. Une erreur est irréversible. Il n'existe aucun service client capable d'annuler une transaction bitcoin.
+> [!WARNING]
+> Une transaction bitcoin est irréversible. Vérifiez toujours l'adresse du destinataire avant de valider l'envoi.
 
 ## Payer en bitcoin chez des commerçants
 
@@ -139,12 +143,18 @@ Un Carrefour Express à Arcachon propose une remise de 20 % sur tous les achats 
 
 Vendre du bitcoin contre des euros est un fait générateur d'imposition en France. Chaque conversion de cryptomonnaies en monnaie fiduciaire (euros, dollars) ou chaque achat d'un bien ou service avec des cryptos doit être déclarée.
 
+> [!IMPORTANT]
+> Chaque vente de bitcoin en euros est imposable. Cela inclut les paiements par carte crypto et les achats directs en BTC.
+
 Le régime fiscal actuel :
 
 - **Flat tax de 30 %** sur les plus-values (12,8 % d'impôt + 17,2 % de prélèvements sociaux)
 - **Seuil d'exonération** : si le total de vos cessions annuelles ne dépasse pas 305 EUR, vous n'êtes pas imposé
 - **Echanges crypto-crypto** : pas de fait générateur. Vous pouvez convertir vos BTC en ETH sans déclarer
 - **Déclaration obligatoire** : formulaire 2086 à remplir chaque année pour chaque opération de vente
+
+> [!NOTE]
+> Le seuil de 305 EUR s'applique au total annuel de vos cessions, pas à chaque transaction. Au-delà, toutes les plus-values sont imposables.
 
 ### Option du barème progressif
 
@@ -185,6 +195,10 @@ Quelques pièges reviennent souvent chez ceux qui vendent leurs premiers bitcoin
 - **Envoyer ses BTC à une mauvaise adresse.** Vérifiez toujours les premiers et derniers caractères de l'adresse. Une transaction bitcoin est définitive.
 - **Ignorer la fiscalité.** Beaucoup de vendeurs découvrent leurs obligations fiscales trop tard. Déclarez chaque cession dès l'année suivante. Le fisc a accès aux données des plateformes enregistrées PSAN.
 - **Laisser ses euros sur la plateforme.** Après la vente, retirez vos euros vers votre compte bancaire. Les fonds laissés sur une plateforme restent exposés en cas de faillite ou de piratage.
+
+> [!CAUTION]
+> Ne laissez jamais vos euros sur une plateforme après la vente. Retirez-les vers votre compte bancaire pour éviter tout risque de perte.
+
 - **Oublier qu'un paiement par carte crypto est une cession.** Chaque fois que vous payez avec une carte Binance ou Crypto.com, le fisc considère que vous avez vendu de la crypto. Ces micro-cessions doivent être déclarées.
 
 ## Nos guides détaillés

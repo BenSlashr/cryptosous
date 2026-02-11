@@ -417,6 +417,82 @@ const BITCOIN_BRANCH_LINKS: Record<string, LinkGroup[]> = {
       ],
     },
   ],
+  vendre: [
+    {
+      title: 'Plateformes',
+      links: getTopExchanges(3).map(e => ({ href: `/plateformes/${e.slug}`, label: e.name })),
+    },
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/staking', label: 'Staking' },
+        { href: '/glossaire/defi', label: 'DeFi' },
+      ],
+    },
+  ],
+  lightning: [
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/blockchain', label: 'Blockchain' },
+        { href: '/glossaire/layer-2', label: 'Layer 2' },
+      ],
+    },
+    {
+      title: 'Wallets',
+      links: getTopWallets(2).map(w => ({ href: `/wallets/${w.slug}`, label: w.name })),
+    },
+  ],
+  minage: [
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/blockchain', label: 'Blockchain' },
+        { href: '/glossaire/halving', label: 'Halving' },
+      ],
+    },
+    {
+      title: 'Cours en direct',
+      links: [{ href: '/prix/bitcoin', label: 'Prix Bitcoin' }],
+    },
+  ],
+  apprendre: [
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/blockchain', label: 'Blockchain' },
+        { href: '/glossaire/bitcoin', label: 'Bitcoin' },
+        { href: '/glossaire/halving', label: 'Halving' },
+      ],
+    },
+    {
+      title: 'Plateformes',
+      links: getTopExchanges(3).map(e => ({ href: `/plateformes/${e.slug}`, label: e.name })),
+    },
+  ],
+  histoire: [
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/blockchain', label: 'Blockchain' },
+        { href: '/glossaire/bitcoin', label: 'Bitcoin' },
+        { href: '/glossaire/halving', label: 'Halving' },
+      ],
+    },
+  ],
+  reglementation: [
+    {
+      title: 'Comprendre',
+      links: [
+        { href: '/glossaire/mica', label: 'MiCA' },
+        { href: '/glossaire/defi', label: 'DeFi' },
+      ],
+    },
+    {
+      title: 'Plateformes',
+      links: getTopExchanges(3).map(e => ({ href: `/plateformes/${e.slug}`, label: e.name })),
+    },
+  ],
 };
 
 /** 8. Bitcoin Guide → contextual by branch + always hub + outils */

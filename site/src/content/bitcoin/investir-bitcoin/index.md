@@ -22,6 +22,9 @@ En 2024 et 2025, les ETF Bitcoin spot américains ont attiré plus de 70 milliar
 
 Pour autant, ces chiffres ne garantissent rien. Le prix du BTC a perdu 77 % entre son sommet de novembre 2021 et son creux de novembre 2022. Investir dans le bitcoin, c'est accepter cette amplitude.
 
+> [!WARNING]
+> N'investissez jamais un capital dont vous pourriez avoir besoin a court terme. Le bitcoin peut perdre 50 % de sa valeur en quelques semaines, et rester en zone de baisse pendant plus d'un an.
+
 ## L'adoption institutionnelle
 
 Le bitcoin n'est plus un actif marginal réservé aux passionnés de technologie. Depuis 2024, les plus gros gestionnaires d'actifs au monde y sont exposés.
@@ -53,6 +56,9 @@ Le DCA consiste à acheter un montant fixe de bitcoin à intervalles réguliers,
 Simulation concrète : un investisseur qui a placé 100 euros par mois en bitcoin de janvier 2020 à décembre 2024 a investi 6 000 euros au total. Son portefeuille valait environ 19 800 euros fin 2024, soit un rendement de +230 %. Son prix d'achat moyen s'est stabilisé autour de 28 500 dollars par BTC.
 
 Le DCA est la stratégie la plus adaptée aux investisseurs qui débutent ou qui n'ont pas un capital important disponible immédiatement. Durée recommandée : minimum 2 à 3 ans pour couvrir au moins un cycle de marché.
+
+> [!TIP]
+> Le DCA vous protege contre vos propres erreurs de timing. Vous achetez pendant les baisses, pendant les hausses, et vous ne perdez pas de temps a attendre "le bon moment".
 
 ### Lump sum (investissement en une fois)
 
@@ -113,6 +119,9 @@ En Europe, des ETN (Exchange-Traded Notes) sur bitcoin sont disponibles sur les 
 
 Attention : les ETF et ETN ne vous donnent pas la possession directe des bitcoins. Vous détenez des parts d'un fonds, pas des BTC. Pour ceux qui veulent la souveraineté sur leurs actifs, l'achat direct sur une plateforme d'échange reste la méthode de référence.
 
+> [!NOTE]
+> Les ETF simplifient la fiscalite et la gestion, mais vous ne controlez pas vos cles privees. L'achat direct vous donne la souverainete sur vos bitcoins, mais implique de gerer vous-meme la securite.
+
 ## Les indicateurs pour évaluer le marché
 
 Acheter au "bon moment" est difficile. Personne ne prédit le cours du bitcoin avec fiabilité. Mais certains indicateurs on-chain aident à évaluer si le marché est plutôt en zone de surchauffe ou de sous-évaluation.
@@ -149,7 +158,8 @@ Si vous détenez vos BTC en direct, la perte de votre clé privée ou de votre s
 
 Les plus-values sur les cryptomonnaies sont soumises au prélèvement forfaitaire unique (PFU) de 30 % : 12,8 % d'impôt sur le revenu et 17,2 % de prélèvements sociaux. Ce taux s'applique au moment où vous convertissez vos cryptos en euros ou que vous payez un bien ou service. Les échanges crypto-crypto ne déclenchent pas d'imposition.
 
-Vous devez déclarer chaque année vos comptes ouverts sur des plateformes basées à l'étranger. L'amende pour un compte non déclaré : 1 500 euros par compte et par an.
+> [!IMPORTANT]
+> Vous devez declarer chaque annee vos comptes ouverts sur des plateformes basees a l'etranger. L'amende pour un compte non declare : 1 500 euros par compte et par an.
 
 ## Bitcoin et la psychologie de l'investisseur
 
@@ -160,6 +170,9 @@ Les pertes en crypto viennent rarement d'un manque d'information. Elles viennent
 Le FOMO (Fear Of Missing Out) se déclenche quand le prix monte vite. Les réseaux sociaux, les gros titres sur les records, les récits de gains rapides - tout pousse à acheter dans l'urgence, souvent au pire moment. L'indice mondial du FOMO a atteint un sommet fin 2025, juste avant la correction.
 
 Le panic sell est le miroir : quand le cours chute de 20 % en une semaine, l'instinct de survie prend le dessus. Vous vendez pour "limiter les dégâts", et vous cristallisez vos pertes. Les investisseurs sans plan de gestion du risque ont perdu en moyenne 37 % de leur portefeuille crypto lors des corrections de 2025, selon une étude du secteur.
+
+> [!CAUTION]
+> Le FOMO et la panique sont les deux principales causes de perte sur les cryptomonnaies. Achetez pendant les hausses euphoriques, vendez pendant les baisses brutales : c'est la recette pour perdre.
 
 ### Le biais de confirmation
 

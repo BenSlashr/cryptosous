@@ -56,6 +56,33 @@ Chaque article DOIT avoir une image hero. Utiliser l'API fal.ai (voir section "G
 
 **REGLE CRITIQUE : TOUJOURS ecrire avec les accents francais** (e, e, e, a, u, c, i, o, u). Un article sans accents est un article a refaire. Les seuls caracteres typographiques bannis sont les guillemets/apostrophes/tirets typographiques (voir ci-dessous), PAS les accents.
 
+**Etape 5 : Ajouter des callouts (blocs enrichis)**
+
+Chaque article doit contenir 3 a 5 callouts au format GitHub Alerts pour enrichir l'experience de lecture. Syntaxe markdown :
+
+```markdown
+> [!TIP]
+> Texte du conseil ici. Maximum 1 a 3 phrases.
+```
+
+Types disponibles et usage :
+
+| Type | Usage | Couleur |
+|------|-------|---------|
+| `[!TIP]` | Conseil pratique, astuce concrete | Or (gold) |
+| `[!NOTE]` | Bon a savoir, info complementaire | Bleu |
+| `[!WARNING]` | Mise en garde, attention | Orange |
+| `[!CAUTION]` | Danger, risque important | Rouge |
+| `[!IMPORTANT]` | Point cle a retenir absolument | Violet |
+
+Regles pour les callouts :
+- 3 a 5 par article, pas plus (sinon ca dilue l'impact)
+- Mixer au moins 2 types differents par article
+- Placer aux points de rupture naturels (entre sections, apres un paragraphe cle)
+- 1 a 3 phrases max par callout - dense en information
+- Jamais de fluff ou de reformulation du paragraphe precedent
+- Chaque callout doit apporter une info actionnable ou un fait nouveau
+
 ### Patterns anti-detection IA
 
 #### Caracteres typographiques bannis

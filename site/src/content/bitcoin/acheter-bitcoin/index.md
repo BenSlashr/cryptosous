@@ -20,6 +20,9 @@ La plupart des plateformes acceptent un premier achat dès 10 EUR. Avec 50 EUR, 
 
 Un conseil pratique : commencez par un montant dont la perte ne changerait rien à votre quotidien. 50 à 100 EUR pour un premier achat, le temps de maîtriser le processus. Vous augmenterez les montants une fois à l'aise avec les outils.
 
+> [!TIP]
+> Utilisez toujours le virement SEPA plutôt que la carte bancaire. Vous économisez entre 1,8 et 4 % de frais, ce qui représente 20 EUR sur 500 EUR investis.
+
 ## Les méthodes pour acheter du bitcoin
 
 Trois grands canaux existent pour acheter du BTC en France. Chacun a ses avantages selon votre profil d'investisseur.
@@ -59,6 +62,9 @@ Toutes les plateformes enregistrées PSAN exigent une vérification d'identité.
 - Un selfie ou une vidéo de vérification
 
 Le processus prend entre 5 minutes et 48 heures selon la plateforme et le volume de demandes. Préparez vos documents avant de vous inscrire pour gagner du temps.
+
+> [!WARNING]
+> Vérifiez que la plateforme est enregistrée PSAN auprès de l'AMF avant de déposer vos euros. La liste officielle est disponible sur le site de l'AMF.
 
 ### 3. Déposer des euros
 
@@ -123,6 +129,9 @@ Imaginons un investissement de 1 200 EUR sur 12 mois :
 
 Pour un premier investissement, le DCA est plus confortable psychologiquement. Vous n'avez pas besoin de "timer" le marché, et une baisse soudaine ne remet pas en question tout votre placement. Plusieurs plateformes proposent des achats récurrents automatiques : Binance, Coinbase, Bitpanda et Swissborg entre autres.
 
+> [!NOTE]
+> La plupart des exchanges permettent de programmer des achats automatiques hebdomadaires ou mensuels. Configurez une fois, laissez tourner, et votre DCA se fait tout seul.
+
 ## Les pièges des frais cachés
 
 Le taux affiché n'est pas toujours le coût réel. Trois types de frais se cumulent et peuvent grignoter votre investissement.
@@ -130,6 +139,9 @@ Le taux affiché n'est pas toujours le coût réel. Trois types de frais se cumu
 ### Le spread
 
 C'est la différence entre le prix d'achat et le prix de vente affiché par la plateforme. Certains services comme Revolut ou Swissborg n'affichent pas de "frais" explicites mais appliquent un spread de 1 à 2,5 %. Sur un achat de 1 000 EUR, ça représente 10 à 25 EUR de coût invisible. Vérifiez toujours le prix réel du BTC sur un site comme CoinGecko et comparez avec le prix proposé par votre plateforme.
+
+> [!CAUTION]
+> Le spread est un frais caché qui peut doubler ou tripler votre coût réel. Comparez toujours le prix affiché avec le cours du marché avant d'acheter.
 
 ### Les frais de retrait réseau
 
@@ -169,6 +181,9 @@ Quand vos bitcoins restent sur un exchange, c'est la plateforme qui détient vos
 ### La règle de base
 
 Pour un petit montant (moins de 200-300 EUR), un wallet logiciel suffit. Au-delà, investissez dans un hardware wallet. Et dans tous les cas, notez votre phrase de récupération (seed phrase de 12 ou 24 mots) sur papier, rangez-la dans un endroit sûr, et ne la partagez jamais avec personne. Cette phrase permet de récupérer vos bitcoins même si votre appareil est détruit.
+
+> [!IMPORTANT]
+> Votre seed phrase est la seule chose qui protège vos bitcoins. Ecrivez-la sur papier et rangez-la dans un endroit sûr. Jamais dans un email, une photo ou un fichier informatique.
 
 ## Les erreurs fréquentes des débutants
 

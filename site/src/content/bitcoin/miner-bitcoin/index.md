@@ -71,6 +71,9 @@ Le calcul de rentabilité dépend de quatre variables :
 
 Un exemple concret. Un Antminer S21+ consomme 3 564 W, soit 85,5 kWh par jour. Au tarif français de 0,25 EUR/kWh, la facture atteint 21,37 EUR/jour. Le profit brut de cette machine est d'environ 10 $ (9,50 EUR). Résultat : une perte quotidienne d'environ 12 EUR. En France, au tarif résidentiel, le minage à domicile n'est pas rentable.
 
+> [!WARNING]
+> Avec un tarif résidentiel à 0,25 EUR/kWh, le minage classique en France génère une perte nette quotidienne. Le seuil de rentabilité se situe sous 0,10 EUR/kWh.
+
 Le seuil de rentabilité se situe sous 0,10 EUR/kWh. C'est le tarif à partir duquel les marges deviennent positives pour les ASIC de dernière génération.
 
 ## Miner du bitcoin en France : légalité, fiscalité, réalité
@@ -83,11 +86,17 @@ Le minage est autorisé en France. Aucune licence n'est requise pour miner chez 
 
 Les revenus du minage sont classés en BNC (Bénéfices Non-Commerciaux). Vous les déclarez sur le formulaire 2042 C. Si votre activité reste occasionnelle, vous relevez du régime micro-BNC avec un abattement de 34 % sur vos recettes. Si vous minez de façon régulière et que vos revenus annuels dépassent 77 700 EUR, vous passez au régime réel. Gardez une trace de chaque BTC reçu, de sa date et de son cours au moment de la réception.
 
+> [!IMPORTANT]
+> Les revenus du minage sont imposables en BNC. Conservez un historique précis de chaque récompense (date, montant en BTC, cours EUR au moment de la réception).
+
 ### Le problème de la rentabilité
 
 Avec un tarif résidentiel à 0,25 EUR/kWh, le minage classique à domicile ne tient pas la route en France. Le seuil de rentabilité pour un ASIC récent se situe autour de 0,08-0,10 EUR/kWh. Vous perdez de l'argent sur chaque kilowattheure consommé.
 
 Trois contraintes supplémentaires viennent s'ajouter. Le bruit : un ASIC génère 70 à 80 dB, l'équivalent d'un aspirateur industriel qui tourne 24h/24. La chaleur : une machine de 3 500 W dégage autant qu'un gros radiateur électrique. Et la consommation : votre compteur Linky va signaler un pic anormal, et votre fournisseur d'énergie pourrait poser des questions.
+
+> [!NOTE]
+> Un ASIC produit entre 70 et 80 dB de bruit continu (équivalent aspirateur industriel) et dégage autant de chaleur qu'un radiateur de 3 500 W. Prévoyez isolation phonique et ventilation adaptée.
 
 ### Le projet de minage nucléaire français
 
@@ -139,6 +148,9 @@ Un radiateur-mineur ressemble à un radiateur électrique classique. À l'intér
 
 En hiver, l'énergie sert deux fois : chauffer et miner. L'argument est simple - vous auriez de toute façon payé l'électricité pour vous chauffer. Le minage devient un "sous-produit" gratuit. En été, la machine est éteinte (ou ne sert qu'à miner, avec un problème de chaleur inutile).
 
+> [!TIP]
+> Les radiateurs-mineurs (WiseMining, Heatbit) transforment la chaleur des ASIC en chauffage domestique. En hiver, l'électricité sert deux fois : vous chauffez et minez simultanément.
+
 ### Rentabilité réelle
 
 Le coût d'un radiateur-mineur tourne autour de 800 à 2 000 EUR selon la puissance. C'est bien plus cher qu'un radiateur classique (100-300 EUR). Le retour sur investissement dépend du cours du bitcoin, de la difficulté réseau et du nombre de mois de chauffe par an. Ne comptez pas devenir riche - les BTC minés couvrent une fraction de votre facture d'électricité. Mais si vous devez remplacer un radiateur électrique, l'option mérite d'être étudiée.
@@ -152,6 +164,9 @@ Vous voulez participer au minage sans acheter un ASIC à 3 000 EUR et sans suppo
 ### Le cloud mining
 
 Des entreprises louent de la puissance de calcul. Vous payez un contrat et recevez une part des BTC minés. Attention : le secteur a été truffé d'arnaques (Hashflare, BitClub Network). Vérifiez la réputation de l'opérateur et calculez la rentabilité réelle après frais avant de signer.
+
+> [!CAUTION]
+> Le cloud mining a un historique chargé d'arnaques (Hashflare, BitClub Network). Vérifiez l'existence réelle des fermes, la transparence des frais et les avis indépendants avant tout engagement financier.
 
 ### L'achat direct de bitcoin
 
