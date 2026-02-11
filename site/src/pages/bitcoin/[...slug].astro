@@ -8,6 +8,8 @@ import BitcoinHub from '@/components/bitcoin/BitcoinHub.astro';
 import BitcoinGuide from '@/components/bitcoin/BitcoinGuide.astro';
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import { getQuizForSlug } from '@/data/bitcoin-quizzes';
+import { getFaqForSlug } from '@/data/bitcoin-faqs';
 
 export async function getStaticPaths() {
   const allPages = await getCollection('bitcoin');
@@ -30,6 +32,11 @@ interface Props {
 const { entry, allPages } = Astro.props;
 const { Content, headings } = await render(entry);
 const isRootHub = entry.id === 'index';
+
+// Compute lookup slug for quiz/FAQ data
+const lookupSlug = entry.id === 'index' ? 'index' : entry.id.replace(/\/index$/, '');
+const quizData = getQuizForSlug(lookupSlug);
+const faqItems = getFaqForSlug(lookupSlug);
 ---
 
 <BaseLayout
@@ -41,15 +48,15 @@ const isRootHub = entry.id === 'index';
 
   <main class="pt-32 pb-16">
     {isRootHub ? (
-      <BitcoinHubRoot entry={entry} allPages={allPages}>
+      <BitcoinHubRoot entry={entry} allPages={allPages} quizData={quizData} faqItems={faqItems}>
         <Content />
       </BitcoinHubRoot>
     ) : entry.data.type === 'hub' ? (
-      <BitcoinHub entry={entry} allPages={allPages}>
+      <BitcoinHub entry={entry} allPages={allPages} quizData={quizData} faqItems={faqItems}>
         <Content />
       </BitcoinHub>
     ) : (
-      <BitcoinGuide entry={entry} allPages={allPages} headings={headings}>
+      <BitcoinGuide entry={entry} allPages={allPages} headings={headings} quizData={quizData} faqItems={faqItems}>
         <Content />
       </BitcoinGuide>
     )}

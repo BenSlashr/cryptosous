@@ -1,11 +1,18 @@
 ---
 import CrossLinks from '@/components/CrossLinks.astro';
+import FAQSection from '@/components/bitcoin/FAQSection.astro';
+import QuizCTA from '@/components/bitcoin/QuizCTA.astro';
+import QuizBitcoin from '@/components/tools/QuizBitcoin.tsx';
 import { getLinksForBitcoinHub } from '@/data/internal-links';
 import type { CollectionEntry } from 'astro:content';
+import type { QuizData } from '@/data/bitcoin-quizzes';
+import type { FAQItem } from '@/data/bitcoin-faqs';
 
 interface Props {
   entry: CollectionEntry<'bitcoin'>;
   allPages: CollectionEntry<'bitcoin'>[];
+  quizData?: QuizData | null;
+  faqItems?: FAQItem[];
 }
 
 function entryIdToSlug(id: string): string {
@@ -14,7 +21,7 @@ function entryIdToSlug(id: string): string {
   return id;
 }
 
-const { entry, allPages } = Astro.props;
+const { entry, allPages, quizData, faqItems = [] } = Astro.props;
 const currentSlug = entryIdToSlug(entry.id);
 const month = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 
@@ -85,10 +92,22 @@ const crossLinks = getLinksForBitcoinHub();
     </div>
   </header>
 
+  <!-- Quiz CTA -->
+  {quizData && (
+    <QuizCTA questionCount={quizData.questions.length} />
+  )}
+
   <!-- Markdown content -->
   <div class="prose-custom mb-12">
     <slot />
   </div>
+
+  <!-- Quiz -->
+  {quizData && (
+    <div id="quiz-section" class="scroll-mt-24 mb-12">
+      <QuizBitcoin client:visible title={quizData.title} questions={quizData.questions} />
+    </div>
+  )}
 
   <!-- Child cards -->
   {children.length > 0 && (
@@ -121,9 +140,14 @@ const crossLinks = getLinksForBitcoinHub();
 
   <!-- Cross-linking -->
   <section class="mb-12">
-    <h2 class="font-display font-700 text-h2 mb-6">Ressources complémentaires</h2>
+    <h2 class="font-display font-700 text-h2 mb-6">Ressources complementaires</h2>
     <CrossLinks groups={crossLinks} title="Explorer aussi" />
   </section>
+
+  <!-- FAQ -->
+  {faqItems.length > 0 && (
+    <FAQSection items={faqItems} />
+  )}
 
   <!-- Disclaimer -->
   <div class="p-5 rounded-card border border-border bg-surface/50 text-xs text-text-muted leading-relaxed">

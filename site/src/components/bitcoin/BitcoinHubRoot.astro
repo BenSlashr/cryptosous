@@ -1,11 +1,18 @@
 ---
 import CrossLinks from '@/components/CrossLinks.astro';
+import FAQSection from '@/components/bitcoin/FAQSection.astro';
+import QuizCTA from '@/components/bitcoin/QuizCTA.astro';
+import QuizBitcoin from '@/components/tools/QuizBitcoin.tsx';
 import { getLinksForBitcoinHub } from '@/data/internal-links';
 import type { CollectionEntry } from 'astro:content';
+import type { QuizData } from '@/data/bitcoin-quizzes';
+import type { FAQItem } from '@/data/bitcoin-faqs';
 
 interface Props {
   entry: CollectionEntry<'bitcoin'>;
   allPages: CollectionEntry<'bitcoin'>[];
+  quizData?: QuizData | null;
+  faqItems?: FAQItem[];
 }
 
 function entryIdToSlug(id: string): string {
@@ -14,7 +21,7 @@ function entryIdToSlug(id: string): string {
   return id;
 }
 
-const { entry, allPages } = Astro.props;
+const { entry, allPages, quizData, faqItems = [] } = Astro.props;
 
 const month = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 
@@ -127,46 +134,6 @@ const collectionPageSchema = {
 
 const crossLinks = getLinksForBitcoinHub();
 
-// FAQ
-const faqItems = [
-  {
-    question: "Qu'est-ce que le Bitcoin ?",
-    answer: "Bitcoin est une monnaie numérique décentralisée créée en 2009 par Satoshi Nakamoto. Elle permet d'envoyer de l'argent de pair à pair, sans banque ni intermédiaire, grâce à la technologie blockchain. Son offre est limitée à 21 millions d'unités.",
-  },
-  {
-    question: "Comment acheter du Bitcoin en France ?",
-    answer: "En France, vous pouvez acheter du Bitcoin sur des plateformes régulées comme Binance, Coinbase ou Kraken. Il suffit de créer un compte, vérifier votre identité (KYC), déposer des euros par virement SEPA ou carte bancaire, puis passer un ordre d'achat. Vous pouvez acheter à partir de quelques euros.",
-  },
-  {
-    question: "Le Bitcoin est-il légal en France ?",
-    answer: "Oui, le Bitcoin est légal en France. Sa détention et son échange sont encadrés par la réglementation européenne MiCA. Les plus-values sont imposées au prélèvement forfaitaire unique (PFU) de 30 %, et les comptes sur des plateformes étrangères doivent être déclarés aux impôts.",
-  },
-  {
-    question: "Combien faut-il investir dans le Bitcoin ?",
-    answer: "Il n'y a pas de montant minimum obligatoire. Un bitcoin se divise en 100 millions de satoshis, ce qui permet d'en acheter pour quelques euros. La plupart des plateformes acceptent des ordres à partir de 1 à 10 euros. La stratégie DCA (investissement régulier) est recommandée pour lisser la volatilité.",
-  },
-  {
-    question: "Comment sécuriser ses bitcoins ?",
-    answer: "Pour sécuriser vos bitcoins, utilisez un portefeuille personnel (wallet) plutôt que de les laisser sur une plateforme d'échange. Les hardware wallets (Ledger, Trezor) offrent le meilleur niveau de sécurité. Protégez votre seed phrase (phrase de récupération) et activez l'authentification à deux facteurs (2FA) sur tous vos comptes.",
-  },
-  {
-    question: "Quelle est la différence entre Bitcoin et les autres cryptomonnaies ?",
-    answer: "Bitcoin est la première et la plus grande cryptomonnaie par capitalisation. Contrairement à la plupart des altcoins, Bitcoin a une offre strictement limitée (21 millions), un réseau très décentralisé et le plus long historique de sécurité. Les autres cryptos (Ethereum, Solana...) offrent des fonctionnalités différentes comme les smart contracts.",
-  },
-];
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqItems.map(item => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: item.answer,
-    },
-  })),
-};
 
 // Pre-compute branch data to avoid complex JSX nesting
 const branchSections = branches.map((child, idx) => {
@@ -279,6 +246,13 @@ const branchSections = branches.map((child, idx) => {
     </div>
   </div>
 
+  <!-- Quiz CTA -->
+  {quizData && (
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+      <QuizCTA questionCount={quizData.questions.length} />
+    </div>
+  )}
+
   <!-- Editorial intro -->
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
     <div class="prose-custom text-lg">
@@ -354,31 +328,25 @@ const branchSections = branches.map((child, idx) => {
     ))}
   </div>
 
+  <!-- Quiz -->
+  {quizData && (
+    <div id="quiz-section" class="scroll-mt-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <QuizBitcoin client:visible title={quizData.title} questions={quizData.questions} />
+    </div>
+  )}
+
   <!-- Cross-linking -->
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-    <h2 class="font-display font-700 text-h2 mb-6">Ressources complémentaires</h2>
+    <h2 class="font-display font-700 text-h2 mb-6">Ressources complementaires</h2>
     <CrossLinks groups={crossLinks} title="Explorer aussi" />
   </div>
 
   <!-- FAQ -->
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-    <h2 class="font-display font-700 text-h2 mb-6">Questions fréquentes sur le Bitcoin</h2>
-    <div class="space-y-3">
-      {faqItems.map((item) => (
-        <details class="group rounded-xl border border-border bg-surface-raised/20 overflow-hidden">
-          <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-sm font-medium text-text-primary hover:text-gold transition-colors list-none [&::-webkit-details-marker]:hidden">
-            <span>{item.question}</span>
-            <svg class="w-4 h-4 shrink-0 text-text-muted transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </summary>
-          <div class="px-5 pb-4 text-sm text-text-secondary leading-relaxed">
-            {item.answer}
-          </div>
-        </details>
-      ))}
+  {faqItems.length > 0 && (
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <FAQSection items={faqItems} title="Questions frequentes sur le Bitcoin" />
     </div>
-  </div>
+  )}
 
   <!-- Disclaimer -->
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -390,4 +358,3 @@ const branchSections = branches.map((child, idx) => {
 
 <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 <script type="application/ld+json" set:html={JSON.stringify(collectionPageSchema)} />
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

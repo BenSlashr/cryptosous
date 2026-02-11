@@ -1,8 +1,13 @@
 ---
 import CrossLinks from '@/components/CrossLinks.astro';
+import FAQSection from '@/components/bitcoin/FAQSection.astro';
+import QuizCTA from '@/components/bitcoin/QuizCTA.astro';
+import QuizBitcoin from '@/components/tools/QuizBitcoin.tsx';
 import TableOfContents from '@/components/bitcoin/TableOfContents.astro';
 import { getLinksForBitcoinGuide } from '@/data/internal-links';
 import type { CollectionEntry } from 'astro:content';
+import type { QuizData } from '@/data/bitcoin-quizzes';
+import type { FAQItem } from '@/data/bitcoin-faqs';
 
 interface Heading {
   depth: number;
@@ -14,6 +19,8 @@ interface Props {
   entry: CollectionEntry<'bitcoin'>;
   allPages: CollectionEntry<'bitcoin'>[];
   headings: Heading[];
+  quizData?: QuizData | null;
+  faqItems?: FAQItem[];
 }
 
 function entryIdToSlug(id: string): string {
@@ -22,7 +29,7 @@ function entryIdToSlug(id: string): string {
   return id;
 }
 
-const { entry, allPages, headings } = Astro.props;
+const { entry, allPages, headings, quizData, faqItems = [] } = Astro.props;
 const currentSlug = entryIdToSlug(entry.id);
 
 // Resolve parent
@@ -155,11 +162,25 @@ const showToc = headings.filter(h => h.depth === 2 || h.depth === 3).length >= 3
     </div>
   )}
 
+  <!-- Quiz CTA -->
+  {quizData && (
+    <QuizCTA questionCount={quizData.questions.length} />
+  )}
+
   <!-- Content + TOC grid -->
   <div class={showToc ? 'lg:grid lg:grid-cols-[1fr_220px] lg:gap-8' : ''}>
-    <article class="prose-custom">
-      <slot />
-    </article>
+    <div>
+      <article class="prose-custom">
+        <slot />
+      </article>
+
+      <!-- Quiz -->
+      {quizData && (
+        <div id="quiz-section" class="scroll-mt-24 mt-12">
+          <QuizBitcoin client:visible title={quizData.title} questions={quizData.questions} />
+        </div>
+      )}
+    </div>
 
     {showToc && (
       <aside>
@@ -207,6 +228,13 @@ const showToc = headings.filter(h => h.depth === 2 || h.depth === 3).length >= 3
   <section class="mt-12">
     <CrossLinks groups={crossLinks} />
   </section>
+
+  <!-- FAQ -->
+  {faqItems.length > 0 && (
+    <div class="mt-12">
+      <FAQSection items={faqItems} />
+    </div>
+  )}
 
   <!-- Disclaimer -->
   <div class="mt-8 p-4 rounded-card border border-border bg-surface-raised/20">
