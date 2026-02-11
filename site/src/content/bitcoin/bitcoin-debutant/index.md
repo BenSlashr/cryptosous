@@ -32,6 +32,17 @@ Plusieurs raisons expliquent l'engouement actuel :
 
 Ça ne veut pas dire que le prix monte toujours. Le marché crypto reste volatil. Mais sur le long terme, la tendance est à la hausse.
 
+## Les chiffres clés à connaître
+
+Quelques données pour situer Bitcoin dans le paysage financier mondial :
+
+- **Bitcoins en circulation** : environ 19,85 millions de BTC minés sur les 21 millions possibles, soit 95 % de l'offre totale. Il reste moins de 1,2 million de BTC à créer.
+- **Capitalisation** : environ 1 600 milliards de dollars en 2025. C'est plus que la plupart des entreprises cotées en bourse, à l'exception d'Apple et Microsoft.
+- **Utilisateurs** : plus de 100 millions de personnes détiennent du Bitcoin via des plateformes d'échange. Environ 30 millions possèdent un portefeuille personnel.
+- **Adresses actives** : entre 700 000 et 1 million d'adresses Bitcoin sont utilisées chaque jour.
+- **Bitcoins perdus** : on estime que 3 à 4 millions de BTC sont inaccessibles (clés privées perdues, portefeuilles oubliés). Ça réduit l'offre réelle disponible.
+- **Dominance** : Bitcoin représente plus de la moitié de la valeur totale du marché crypto. Aucune autre cryptomonnaie ne s'en approche.
+
 ## Comment acheter son premier bitcoin
 
 L'achat de Bitcoin passe par une plateforme d'échange. En France, les plus connues sont Binance, Coinbase, Bitpanda ou Bitvavo. Voici les étapes :
@@ -65,6 +76,52 @@ L'alternative : transférer vos BTC vers un portefeuille personnel.
 
 Dans tous les cas, notez votre seed phrase (la suite de 12 ou 24 mots qui donne accès à votre portefeuille). Sans elle, vos bitcoins sont perdus pour toujours.
 
+## Bitcoin vs le système bancaire : quelles différences ?
+
+Beaucoup de débutants se demandent ce que Bitcoin apporte par rapport à un compte en banque classique. Voici une comparaison concrète sur les points qui comptent.
+
+**Les virements.** Un virement SEPA en zone euro prend 1 à 2 jours ouvrés. Un virement international ? Comptez 3 à 5 jours et des frais de 20 à 50 euros. Avec Bitcoin, une transaction est confirmée en 10 à 30 minutes, où que vous l'envoyiez dans le monde. Les frais : quelques centimes à quelques euros, quel que soit le montant.
+
+**L'accès.** Pour ouvrir un compte bancaire, il faut des papiers, une adresse fixe, et parfois l'accord de la banque. Bitcoin ne demande rien de tout ça. Un smartphone et une connexion internet suffisent. C'est ce qui explique son succès dans les pays où une grande partie de la population n'a pas accès aux services bancaires.
+
+**Le contrôle.** Votre banque peut geler votre compte, refuser un virement ou limiter vos retraits. Avec Bitcoin, personne ne peut bloquer vos fonds. Vous êtes le seul à décider de ce que vous faites avec votre argent. Ce contrôle total a un revers : si vous perdez vos clés, personne ne peut vous aider.
+
+**Les horaires.** Les banques ferment le week-end et les jours fériés. Le réseau Bitcoin fonctionne 24 heures sur 24, 365 jours par an. Une transaction un dimanche à 3h du matin ? Aucun problème.
+
+**La transparence.** Les mouvements sur votre compte bancaire sont privés, visibles uniquement par vous et votre banque. Sur Bitcoin, toutes les transactions sont publiques et vérifiables sur la blockchain. Les adresses sont pseudonymes (pas de noms), mais les flux d'argent sont traçables.
+
+## Mythes et idées reçues sur Bitcoin
+
+Bitcoin traîne des clichés tenaces. Certains datent de ses débuts. D'autres sont entretenus par méconnaissance. Voici les plus répandus, avec les faits pour y répondre.
+
+**"Bitcoin est une arnaque."** Bitcoin fonctionne depuis 2009 sans interruption. Son code est open source, vérifiable par n'importe qui. Des arnaqueurs utilisent le nom de Bitcoin pour piéger des victimes, oui. Mais le protocole lui-même n'est pas une arnaque, de la même façon qu'internet n'est pas une arnaque parce que des sites frauduleux existent.
+
+**"C'est réservé aux criminels."** Les transactions Bitcoin sont traçables sur la blockchain. Les forces de l'ordre s'en servent d'ailleurs pour remonter des réseaux. Selon Chainalysis, les transactions illicites représentaient 0,15 % du volume total en crypto en 2021 - un taux bien inférieur à celui de l'argent liquide.
+
+**"C'est trop tard pour en acheter."** Ce mythe revient à chaque nouveau sommet de prix. Les gens qui ont acheté à 100 dollars pensaient qu'il était trop tard. Pareil à 1 000, 10 000, ou 50 000 dollars. La question n'est pas le prix actuel, mais votre horizon de placement et votre tolérance au risque.
+
+**"Bitcoin est anonyme."** Non. Bitcoin est pseudonyme. Chaque transaction est liée à une adresse publique. Des entreprises spécialisées comme Chainalysis peuvent relier ces adresses à des identités réelles. Pour les achats sur des plateformes régulées, votre identité est vérifiée (KYC).
+
+**"Bitcoin pollue trop."** Le minage consomme de l'énergie, c'est vrai. Mais plus de la moitié de cette énergie provient de sources renouvelables. Et rapporté à la valeur qu'il sécurise, le réseau Bitcoin consomme moins que le système bancaire mondial avec ses agences, ses data centers et ses transports de fonds.
+
+**"Il faut être un expert en informatique."** Acheter du Bitcoin sur Coinbase ou Binance est aussi simple que commander un article en ligne. Les interfaces sont pensées pour le grand public. Vous n'avez pas besoin de comprendre la cryptographie pour utiliser Bitcoin, comme vous n'avez pas besoin de comprendre TCP/IP pour envoyer un email.
+
+## Comprendre la volatilité du prix
+
+Le cours du Bitcoin bouge beaucoup. Des variations de 5 à 10 % en une journée ne sont pas rares. Ça peut inquiéter quand on débute.
+
+Quelques repères pour mettre cette volatilité en perspective :
+
+**La tendance baisse avec le temps.** Dans ses premières années, Bitcoin pouvait varier de 20 % en un seul jour. Aujourd'hui, les mouvements quotidiens dépassent rarement 5 à 8 %. Plus le marché grandit, plus les oscillations se réduisent.
+
+**Le prix suit des cycles.** Depuis 2009, Bitcoin a traversé quatre grands cycles : montée, euphorie, chute brutale, stabilisation, puis nouveau cycle. Le halving (division par deux de la récompense des mineurs, tous les 4 ans) a historiquement précédé chaque phase de hausse.
+
+**Les corrections sont normales.** Bitcoin a perdu plus de 50 % de sa valeur à plusieurs reprises : -80 % en 2018, -75 % en 2022. À chaque fois, il a retrouvé puis dépassé son ancien record. Ça ne garantit rien pour l'avenir, mais ça montre la résilience du réseau.
+
+**Comment suivre le cours ?** CoinGecko et CoinMarketCap sont les deux sites de référence. Ils affichent le prix en temps réel, le volume d'échanges et l'historique. L'application de votre plateforme d'achat affiche aussi le cours en continu.
+
+Un conseil : ne regardez pas le prix toutes les heures. Si vous investissez sur le long terme, les fluctuations quotidiennes ne vous concernent pas.
+
 ## Les erreurs courantes quand on débute
 
 La plupart des pertes en crypto ne viennent pas de la technologie, mais de mauvaises décisions. Voici les pièges les plus fréquents :
@@ -73,10 +130,25 @@ La plupart des pertes en crypto ne viennent pas de la technologie, mais de mauva
 - **Acheter sous l'émotion.** Quand le prix monte fort, l'envie d'acheter est irrésistible. Quand il chute, la panique pousse à vendre. Les deux réactions mènent à des pertes.
 - **Ignorer la fiscalité.** En France, les plus-values sur les crypto-actifs sont imposables. Le taux forfaitaire est de 30 % (flat tax). Vous devez déclarer vos comptes sur des plateformes étrangères.
 - **Ne pas sécuriser ses accès.** Mot de passe faible, seed phrase stockée en photo sur le téléphone, absence d'authentification à deux facteurs - autant d'erreurs qui facilitent le vol.
+- **Suivre les "conseils" sur les réseaux sociaux.** Twitter, Telegram et YouTube regorgent de "gurus" qui promettent des gains faciles. La plupart cherchent à vendre leur propre formation ou à manipuler le prix d'un actif. Vérifiez toujours vos sources.
+- **Tout miser sur un seul achat.** Acheter pour 5 000 euros de Bitcoin d'un coup, c'est parier que le moment est le bon. Statistiquement, vous avez plus de chances de lisser votre risque avec des achats réguliers.
 
 ### La stratégie DCA pour limiter le risque
 
 Plutôt que d'investir une grosse somme d'un coup, le DCA (Dollar-Cost Averaging) consiste à acheter un montant fixe à intervalles réguliers. Par exemple, 50 euros de Bitcoin chaque semaine. Cette méthode lisse votre prix d'achat et vous évite de tout miser au mauvais moment.
+
+## Mini-lexique du débutant
+
+Vous allez croiser ces termes partout. Voici ce qu'ils veulent dire, en deux phrases maximum.
+
+- **Wallet (portefeuille)** : l'application ou l'appareil qui stocke vos clés privées et vous permet d'envoyer ou recevoir du Bitcoin. Il en existe des versions logicielles (sur téléphone) et matérielles (clé USB sécurisée).
+- **Seed phrase (phrase de récupération)** : une suite de 12 ou 24 mots générée à la création de votre portefeuille. C'est la seule façon de récupérer vos fonds si vous perdez votre appareil.
+- **Satoshi (sat)** : la plus petite unité de Bitcoin. 1 BTC = 100 000 000 satoshis. Quand on dit "empiler des sats", ça veut dire accumuler de petites quantités de Bitcoin.
+- **HODL** : argot crypto pour "hold" (garder). Vient d'une faute de frappe devenue culte sur un forum en 2013. Ça désigne la stratégie qui consiste à garder ses BTC sur le long terme, sans vendre à la moindre baisse.
+- **DCA (Dollar-Cost Averaging)** : acheter un montant fixe de Bitcoin à intervalle régulier (chaque semaine, chaque mois). Ça évite de chercher le "bon moment" pour acheter.
+- **Halving** : événement programmé tous les 210 000 blocs (environ 4 ans) qui divise par deux la récompense des mineurs. Le dernier a eu lieu en avril 2024. Le prochain est prévu vers 2028.
+- **Blockchain** : le registre public et décentralisé qui enregistre toutes les transactions Bitcoin. Chaque bloc contient un groupe de transactions et est lié au précédent.
+- **KYC (Know Your Customer)** : la procédure de vérification d'identité imposée aux plateformes. Vous devez fournir une pièce d'identité avant de pouvoir acheter.
 
 ## Par où continuer ?
 

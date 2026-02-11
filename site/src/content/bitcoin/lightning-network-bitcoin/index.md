@@ -54,6 +54,20 @@ Pour utiliser le Lightning Network, vous avez besoin d'un wallet compatible. Plu
 
 Le choix dépend de votre priorité : contrôle total sur vos clés (Phoenix, Breez) ou simplicité maximale (Wallet of Satoshi, Blink).
 
+## Envoyer votre premier paiement Lightning
+
+Vous voulez tester par vous-même ? Avec Phoenix Wallet, quatre étapes suffisent.
+
+**1. Installer Phoenix et sauvegarder votre phrase de récupération.** Téléchargez l'application sur iOS ou Android. Au premier lancement, Phoenix génère une phrase de 12 mots. Notez-la sur papier et rangez-la en lieu sûr. Cette phrase est la seule façon de récupérer vos fonds si vous perdez votre téléphone.
+
+**2. Déposer des sats dans votre wallet.** Appuyez sur "Recevoir" pour afficher votre adresse Lightning ou une adresse Bitcoin classique. Envoyez-vous un petit montant depuis un exchange ou un autre wallet. Le dépôt minimum sur Phoenix est de 10 000 satoshis (environ quelques euros). Phoenix crée automatiquement un canal Lightning pour vous - c'est un LSP (Lightning Service Provider) qui s'occupe de la plomberie technique en arrière-plan.
+
+**3. Scanner ou coller une facture Lightning.** Pour payer quelqu'un, appuyez sur "Envoyer", puis collez une facture Lightning (une chaîne qui commence par "lnbc...") ou scannez un QR code. Phoenix affiche le montant, la description et les frais estimés.
+
+**4. Confirmer le paiement.** Appuyez sur "Payer". Le règlement prend entre 1 et 3 secondes. Vous recevez une confirmation instantanée. C'est fait.
+
+Les frais de routage sur Lightning sont de l'ordre de quelques satoshis - souvent moins d'un centime d'euro. Phoenix facture aussi des frais de service minimes pour la gestion automatique des canaux.
+
 ## Cas d'usage concrets
 
 Le Lightning Network n'est pas qu'une curiosité technique. Plusieurs usages se sont développés depuis son lancement.
@@ -65,6 +79,18 @@ Le Lightning Network n'est pas qu'une curiosité technique. Plusieurs usages se 
 **El Salvador** : le pays a adopté Bitcoin comme monnaie légale en 2021. Le wallet Chivo, distribué par le gouvernement, utilise le Lightning Network pour les paiements du quotidien. Les résultats sont mitigés en termes d'adoption populaire, mais l'infrastructure Lightning reste active.
 
 **Pourboires et créateurs de contenu** : des plateformes comme Nostr (réseau social décentralisé) et les applications de podcast 2.0 (Fountain, Breez) intègrent Lightning pour payer les créateurs directement, sans intermédiaire et sans montant minimum.
+
+## Lightning et Nostr : les zaps et le web social décentralisé
+
+Nostr est un protocole de réseau social décentralisé. Pas de serveur central, pas de modération d'entreprise : chaque utilisateur publie ses messages sur des relais indépendants. Et Lightning est intégré directement dans le protocole, via une fonction appelée "zaps".
+
+Un zap, c'est un pourboire en satoshis envoyé à un autre utilisateur Nostr. Vous lisez un post qui vous plaît, vous cliquez sur l'icône éclair, vous choisissez un montant (100, 1 000 ou 10 000 sats par exemple), et le paiement part via Lightning. Le créateur reçoit ses sats en quelques secondes, sans inscription à une plateforme de monétisation, sans commission de 30 %, et sans délai.
+
+Les chiffres sont parlants : les utilisateurs de Nostr ont envoyé plus de 2,6 milliards de satoshis en zaps depuis le lancement de la fonctionnalité. C'est un modèle économique différent de la publicité ou de l'abonnement. Le lecteur paye directement le créateur, à la pièce, pour le contenu qu'il apprécie.
+
+Les zaps servent aussi de mécanisme anti-spam. Publier un message est gratuit, mais les zaps donnent un signal de qualité : un post très "zappé" remonte dans les fils d'actualité de certains clients Nostr. L'argent remplace les likes comme indicateur de valeur.
+
+Pour utiliser les zaps, il suffit de connecter un wallet Lightning à votre client Nostr (Damus, Amethyst, Primal...). La plupart supportent les wallets comme Phoenix, Wallet of Satoshi ou Alby.
 
 ## Lightning Network vs Bitcoin on-chain
 
@@ -80,13 +106,63 @@ Les deux couches ont des rôles différents. Elles ne sont pas en compétition m
 
 Bitcoin on-chain reste le choix pour les gros transferts et le stockage de valeur à long terme. Lightning sert pour les paiements rapides et les petits montants. Les deux systèmes s'appuient l'un sur l'autre : Lightning ne fonctionne pas sans la blockchain Bitcoin comme couche de base.
 
+## La sécurité sur Lightning : ce qu'il faut savoir
+
+Lightning est sécurisé par la blockchain Bitcoin, mais le fonctionnement hors-chaîne introduit des risques spécifiques. Voici les principaux.
+
+### La fermeture forcée (force close)
+
+Quand tout se passe bien, les deux parties d'un canal coopèrent pour le fermer. Mais si l'un des deux disparaît (serveur hors ligne, téléphone perdu), l'autre peut forcer la fermeture en publiant le dernier état du canal sur la blockchain. C'est la "force close". Elle fonctionne, mais elle coûte plus cher en frais on-chain et bloque vos fonds pendant une période d'attente (souvent 1 à 2 semaines) avant que vous puissiez les récupérer.
+
+Le vrai danger : un partenaire malhonnête qui tente de publier un ancien état du canal pour récupérer plus que ce qui lui revient. C'est la tentative de fraude la plus connue sur Lightning.
+
+### Les watchtowers : une garde automatisée
+
+Pour contrer les fermetures frauduleuses, il existe des watchtowers (tours de garde). Ce sont des services qui surveillent la blockchain en permanence à votre place. Si quelqu'un publie un ancien état d'un de vos canaux, la watchtower diffuse une "transaction de justice" qui pénalise le fraudeur - il perd tous les fonds du canal.
+
+Les watchtowers résolvent le problème du "vous devez être en ligne pour surveiller vos canaux". En pratique, les wallets comme Phoenix gèrent cette surveillance automatiquement. Si vous opérez votre propre noeud, vous pouvez configurer une watchtower externe pour plus de sécurité.
+
+### Sauvegarder vos canaux
+
+Perdre votre téléphone sans backup signifie perdre l'état de vos canaux Lightning. Contrairement au Bitcoin on-chain où votre phrase de récupération suffit pour retrouver vos fonds, Lightning a besoin d'informations supplémentaires : l'état actuel de chaque canal. Phoenix et la plupart des wallets modernes sauvegardent ces données automatiquement (chiffrées, dans le cloud). Vérifiez que cette option est activée dans votre wallet.
+
+### Centralisation du réseau de routage
+
+Un sujet de débat dans la communauté : la concentration du réseau. Les 10 plus gros noeuds contrôlent environ 85 % de la capacité publique de routage. Et près de la moitié des noeuds Lightning sont hébergés chez des fournisseurs cloud comme AWS (30 %) et Google Cloud (18 %). Si un de ces fournisseurs tombe en panne, une partie du réseau peut devenir temporairement inaccessible.
+
+Ce n'est pas un défaut de conception mais une réalité d'usage : les gros noeuds attirent plus de liquidité parce qu'ils routent plus de paiements. Des solutions comme les canaux privés et le routage par trampolines visent à redistribuer le trafic sur un plus grand nombre de noeuds.
+
+## L'avenir du Lightning Network
+
+Le protocole continue d'évoluer. Plusieurs améliorations techniques arrivent ou sont déjà en cours de déploiement.
+
+### BOLT12 : des factures réutilisables
+
+Le format actuel de facture Lightning (BOLT11) a un défaut : chaque facture est à usage unique. Vous devez en générer une nouvelle pour chaque paiement. BOLT12, aussi appelé "Offers", change la donne. Il introduit des factures réutilisables, proches d'un IBAN Lightning. Vous publiez une seule adresse, et n'importe qui peut vous payer autant de fois qu'il le souhaite. BOLT12 ajoute aussi les "blinded paths" (chemins masqués) qui cachent votre noeud dans le réseau, pour plus de confidentialité. Core Lightning a intégré BOLT12 dans sa dernière version - c'est la première nouvelle spécification ajoutée au protocole depuis 2017.
+
+### Le splicing : redimensionner un canal sans le fermer
+
+Avec le splicing, vous pouvez ajouter ou retirer des fonds d'un canal existant sans passer par une fermeture et une réouverture. En pratique, cela veut dire que votre canal reste actif et opérationnel pendant que vous ajustez sa taille. Moins de transactions on-chain, moins de frais, et une meilleure gestion de votre liquidité. Phoenix utilise déjà le splicing dans sa dernière version.
+
+### Taproot channels : plus de confidentialité
+
+Les canaux Taproot utilisent la mise à jour Taproot de Bitcoin (activée en 2021) pour rendre les transactions d'ouverture et de fermeture de canaux indiscernables des transactions Bitcoin classiques. Résultat : il devient plus difficile de distinguer une transaction Lightning d'un simple transfert on-chain. C'est un gain direct en confidentialité pour tout le réseau.
+
+### Les LSP : simplifier l'accès au réseau
+
+Les LSP (Lightning Service Providers) sont des fournisseurs de liquidité qui ouvrent des canaux pour vous automatiquement. Quand vous utilisez Phoenix ou Breez, c'est un LSP qui gère la création de canaux, la liquidité entrante et le routage. Vous n'avez rien à configurer. Les LSP facturent des frais minimes sur les paiements entrants pour couvrir leurs coûts. Ce modèle rend Lightning accessible à des utilisateurs qui ne veulent pas gérer de noeud.
+
+### Taproot Assets : des stablecoins sur Lightning
+
+Depuis début 2025, le protocole Taproot Assets permet d'envoyer des actifs autres que le BTC via Lightning. L'usage le plus attendu : les stablecoins. Tether (USDT) peut circuler sur Lightning, ce qui ouvre la porte à des paiements en dollars quasi instantanés et quasi gratuits, réglés par l'infrastructure Bitcoin. Pour les envois de fonds internationaux, c'est un concurrent direct des services comme Western Union.
+
 ## Les limites actuelles
 
 Le Lightning Network progresse, mais des défis restent. La gestion de la liquidité dans les canaux est technique : pour recevoir des paiements, vous devez avoir de la capacité entrante, ce qui n'est pas toujours intuitif. Le nombre de noeuds publics a diminué depuis 2022, ce qui pose des questions sur la décentralisation du réseau de routage.
 
 L'expérience utilisateur s'est beaucoup améliorée grâce aux wallets modernes, mais elle reste en retrait par rapport à une application bancaire classique. Et pour les gros montants, la liquidité des canaux peut poser des limites - même si les paiements multi-chemins atténuent ce problème.
 
-Le réseau évolue vite. De nouvelles propositions comme les "splicing" (ajout de fonds à un canal existant sans le fermer) et le protocole BOLT12 (factures réutilisables) montrent que l'infrastructure continue de s'améliorer.
+Le risque de perte de fonds existe aussi, même s'il est rare. Un bug logiciel, une panne prolongée de votre noeud ou l'absence de watchtower peuvent créer des situations où un partenaire de canal malhonnête récupère plus que sa part. Les wallets grand public minimisent ce risque, mais il n'est pas nul.
 
 ## Aller plus loin
 
