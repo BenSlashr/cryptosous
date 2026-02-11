@@ -1,0 +1,133 @@
+---
+const videos = [
+  {
+    title: 'Comprendre le Bitcoin en 10 minutes',
+    category: 'Éducation',
+    duration: '10:24',
+    views: '45K vues',
+  },
+  {
+    title: 'Live : Analyse des marchés de la semaine',
+    category: 'Live',
+    duration: '48:12',
+    views: '12K vues',
+    isLive: true,
+  },
+  {
+    title: 'Interview : Le CEO de Binance France',
+    category: 'Interview',
+    duration: '32:45',
+    views: '28K vues',
+  },
+];
+
+const podcasts = [
+  {
+    title: 'Ep. 142 — Le futur de la tokenisation',
+    guest: 'avec Jean-Michel Billaut',
+    duration: '45 min',
+  },
+  {
+    title: 'Ep. 141 — Régulation crypto en France',
+    guest: 'avec Me Claire Duval',
+    duration: '38 min',
+  },
+];
+---
+
+<section class="py-section border-t border-border">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-12 gap-10">
+      <!-- Videos -->
+      <div class="lg:col-span-8">
+        <div class="flex items-center justify-between mb-8">
+          <div class="flex items-center gap-3">
+            <div class="w-1 h-6 bg-negative rounded-full"></div>
+            <h2 class="font-display font-700 text-h2">Vidéo</h2>
+          </div>
+          <a href="/videos" class="text-sm text-text-secondary hover:text-gold transition-colors duration-200 cursor-pointer flex items-center gap-1">
+            Toutes les vidéos
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid sm:grid-cols-3 gap-5">
+          {videos.map((video) => (
+            <a href="#" class="group cursor-pointer block">
+              <!-- Thumbnail -->
+              <div class="relative aspect-video rounded-card overflow-hidden bg-surface mb-3">
+                <div class="absolute inset-0 bg-gradient-to-br from-surface-raised to-surface flex items-center justify-center">
+                  <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-gold/20 transition-colors duration-200">
+                    <svg class="w-5 h-5 text-text-primary ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+                <!-- Duration badge -->
+                <div class="absolute bottom-2 right-2 px-2 py-0.5 text-[10px] font-mono font-medium bg-void/80 text-text-primary rounded">
+                  {video.duration}
+                </div>
+                {video.isLive && (
+                  <div class="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold bg-negative text-white rounded uppercase flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse-dot"></span>
+                    Live
+                  </div>
+                )}
+              </div>
+              <span class="text-[10px] font-semibold text-text-muted uppercase tracking-wider">{video.category}</span>
+              <h3 class="text-sm font-semibold leading-snug group-hover:text-gold transition-colors duration-200 mt-1 mb-1">{video.title}</h3>
+              <span class="text-xs text-text-muted">{video.views}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Podcast -->
+      <div class="lg:col-span-4">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-1 h-6 bg-violet rounded-full"></div>
+          <h2 class="font-display font-700 text-h2">Podcast</h2>
+        </div>
+
+        <div class="rounded-card border border-border bg-surface-raised/30 p-6">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-12 h-12 rounded-card bg-gradient-to-br from-violet to-gold flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-display font-700 text-sm">CryptoSous Podcast</h3>
+              <p class="text-xs text-text-muted">Chaque mardi & jeudi</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            {podcasts.map((ep) => (
+              <a href="#" class="group cursor-pointer flex items-start gap-3 p-3 rounded-lg hover:bg-surface-hover transition-colors duration-200">
+                <div class="w-8 h-8 rounded-lg bg-violet/10 flex items-center justify-center flex-shrink-0 group-hover:bg-violet/20 transition-colors duration-200">
+                  <svg class="w-4 h-4 text-violet-light" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="text-sm font-medium leading-snug group-hover:text-gold transition-colors duration-200">{ep.title}</h4>
+                  <p class="text-xs text-text-muted mt-0.5">{ep.guest} — {ep.duration}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          <a href="/podcast" class="mt-4 inline-flex items-center gap-1 text-sm text-violet-light hover:text-violet transition-colors duration-200 cursor-pointer">
+            Tous les épisodes
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

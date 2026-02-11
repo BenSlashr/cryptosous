@@ -1,0 +1,144 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import DCACalculator from '@/components/tools/DCACalculator';
+
+const faqItems = [
+  {
+    q: 'Qu\'est-ce que le DCA (Dollar Cost Averaging) ?',
+    a: 'Le DCA consiste à investir un montant fixe à intervalles réguliers (chaque semaine, chaque mois) plutôt que tout d\'un coup. Cette méthode lisse le prix d\'achat moyen et réduit l\'impact de la volatilité sur votre portefeuille.',
+  },
+  {
+    q: 'Le DCA est-il une bonne stratégie pour la crypto ?',
+    a: 'La crypto est un marché très volatile. Le DCA permet d\'éviter le piège du "market timing" - personne ne sait quand le prix est au plus bas. En investissant régulièrement, vous achetez parfois cher, parfois pas cher, et votre prix moyen reste équilibré.',
+  },
+  {
+    q: 'Combien investir en DCA ?',
+    a: 'Investissez uniquement ce que vous pouvez vous permettre de perdre. Un montant classique se situe entre 50 et 500 euros par mois selon vos revenus. La régularité compte plus que le montant.',
+  },
+  {
+    q: 'Les résultats du simulateur sont-ils garantis ?',
+    a: 'Non. Le simulateur utilise les données historiques réelles, mais les performances passées ne garantissent pas les résultats futurs. C\'est un outil de projection, pas un conseil financier.',
+  },
+];
+---
+
+<BaseLayout
+  title="Calculateur DCA Crypto - Simulez votre investissement progressif | CryptoSous"
+  description="Simulez une stratégie DCA sur Bitcoin, Ethereum ou Solana. Visualisez combien vous auriez gagné en investissant régulièrement sur 1, 2 ou 5 ans."
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-gold transition-colors cursor-pointer">Outils</a>
+        <span>/</span>
+        <span class="text-text-secondary">Calculateur DCA</span>
+      </nav>
+
+      <!-- H1 + Intro -->
+      <div class="mb-10">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          Calculateur <span class="text-gradient-gold">DCA Crypto</span>
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-xl">
+          Simulez une stratégie d'investissement progressif (DCA) sur Bitcoin, Ethereum ou Solana. Découvrez combien vous auriez gagné en investissant régulièrement.
+        </p>
+      </div>
+
+      <!-- Interactive Widget (React Island) -->
+      <DCACalculator client:load />
+
+      <!-- SEO Content -->
+      <section class="mt-16 space-y-8">
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Le DCA, c'est quoi exactement ?</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Le Dollar Cost Averaging (DCA) est une stratégie d'investissement simple : vous achetez la même quantité d'un actif à intervalles réguliers, quel que soit le prix du moment. En crypto, ça revient à mettre par exemple 100 euros chaque mois dans du Bitcoin.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            L'idée : au lieu de tout miser d'un coup (et risquer d'acheter au plus haut), vous étalez vos achats dans le temps. Certains mois vous achetez "cher", d'autres "pas cher". Au final, votre prix moyen d'achat se stabilise.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Pourquoi le DCA marche bien en crypto ?</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Les marchés crypto bougent de 10 à 20% en une seule journée. Prédire le "bon moment" pour acheter est quasiment impossible, même pour les professionnels. Le DCA supprime ce stress : vous investissez mécaniquement, sans émotion.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            Historiquement, un DCA mensuel sur Bitcoin sur n'importe quelle période de 3 ans ou plus a toujours été rentable. Ce n'est pas une garantie pour l'avenir, mais ça illustre la puissance de cette approche sur un actif qui tend à monter sur le long terme.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Comment lire les résultats du simulateur</h2>
+          <ul class="space-y-3 text-text-secondary">
+            <li class="flex gap-3">
+              <span class="text-gold font-bold">Total investi</span>
+              <span>La somme totale de vos achats réguliers sur la période choisie.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="text-gold font-bold">Valeur actuelle</span>
+              <span>Ce que vaut votre portefeuille au prix du marché d'aujourd'hui.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="text-gold font-bold">Rendement</span>
+              <span>Le pourcentage de gain (ou perte) par rapport à votre investissement total.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="text-gold font-bold">Prix moyen</span>
+              <span>Le prix moyen auquel vous avez acquis vos cryptos sur toute la période.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="mt-16">
+        <h2 class="font-display font-700 text-h2 mb-8">Questions fréquentes</h2>
+        <div class="space-y-4">
+          {faqItems.map((item) => (
+            <details class="group rounded-card border border-border bg-surface-raised/30 overflow-hidden">
+              <summary class="flex items-center justify-between p-5 cursor-pointer text-text-primary font-medium hover:text-gold transition-colors">
+                {item.q}
+                <svg class="w-5 h-5 text-text-muted group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-text-secondary leading-relaxed">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
+      <div class="mt-12 p-5 rounded-card border border-border bg-surface/50 text-xs text-text-muted leading-relaxed">
+        <strong class="text-text-secondary">Avertissement :</strong> Cet outil est fourni à titre informatif. Les résultats sont basés sur des données historiques et ne constituent pas un conseil en investissement. Les performances passées ne présagent pas des performances futures. Investir en cryptomonnaies comporte des risques de perte en capital.
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    })),
+  })} />
+</BaseLayout>

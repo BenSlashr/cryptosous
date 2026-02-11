@@ -1,0 +1,70 @@
+---
+// Market Data Overview Bar — key crypto prices with mini sparklines
+const coins = [
+  { symbol: 'BTC', name: 'Bitcoin', price: '104 231', change: '+2.4%', positive: true },
+  { symbol: 'ETH', name: 'Ethereum', price: '3 892', change: '+1.8%', positive: true },
+  { symbol: 'SOL', name: 'Solana', price: '187', change: '-0.7%', positive: false },
+  { symbol: 'BNB', name: 'BNB', price: '612', change: '+0.9%', positive: true },
+  { symbol: 'XRP', name: 'Ripple', price: '2.41', change: '+3.2%', positive: true },
+  { symbol: 'ADA', name: 'Cardano', price: '0.87', change: '-1.1%', positive: false },
+];
+---
+
+<section class="border-y border-border bg-surface/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-2 py-4 overflow-x-auto scrollbar-hide">
+      <span class="text-xs font-semibold text-text-muted uppercase tracking-wider flex-shrink-0 mr-4">Marchés</span>
+      {coins.map((coin) => (
+        <a
+          href={`/prix/${coin.symbol.toLowerCase()}`}
+          class="flex items-center gap-3 px-4 py-2.5 rounded-card border border-border hover:border-text-muted bg-surface-raised/50 hover:bg-surface-hover transition-all duration-200 cursor-pointer flex-shrink-0 min-w-[180px]"
+        >
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold text-text-primary">{coin.symbol}</span>
+              <span class="text-xs text-text-muted">{coin.name}</span>
+            </div>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-mono font-medium">${coin.price}</span>
+              <span class={`text-xs font-semibold ${coin.positive ? 'text-positive' : 'text-negative'}`}>
+                {coin.change}
+              </span>
+            </div>
+          </div>
+          <!-- Mini Sparkline SVG -->
+          <svg class="w-16 h-8 flex-shrink-0" viewBox="0 0 64 32">
+            {coin.positive ? (
+              <polyline
+                points="0,28 10,22 20,25 30,18 40,20 50,12 64,8"
+                fill="none"
+                stroke="#10B981"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            ) : (
+              <polyline
+                points="0,8 10,12 20,10 30,18 40,22 50,16 64,24"
+                fill="none"
+                stroke="#EF4444"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            )}
+          </svg>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

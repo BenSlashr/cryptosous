@@ -1,0 +1,215 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import CrossLinks from '@/components/CrossLinks.astro';
+import { getCollection, render } from 'astro:content';
+import { getExchangesSortedByScore } from '@/data/exchange-reviews';
+import { getWalletsSortedByScore } from '@/data/wallet-reviews';
+import type { LinkGroup } from '@/data/internal-links';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Build cross-links for blog posts
+const topExchanges = getExchangesSortedByScore().slice(0, 3);
+const topWallets = getWalletsSortedByScore().slice(0, 2);
+
+const crossLinkGroups: LinkGroup[] = [
+  {
+    title: 'Cours en direct',
+    links: [
+      { href: '/prix/bitcoin', label: 'Bitcoin' },
+      { href: '/prix/ethereum', label: 'Ethereum' },
+      { href: '/prix/solana', label: 'Solana' },
+      { href: '/prix/cardano', label: 'Cardano' },
+    ],
+  },
+  {
+    title: 'Ou acheter des cryptos',
+    links: topExchanges.map((e) => ({ href: `/plateformes/${e.slug}`, label: e.name })),
+  },
+  {
+    title: 'Stocker en securite',
+    links: topWallets.map((w) => ({ href: `/wallets/${w.slug}`, label: w.name })),
+  },
+  {
+    title: 'Comprendre',
+    links: [
+      { href: '/glossaire/blockchain', label: 'Blockchain' },
+      { href: '/glossaire/proof-of-stake', label: 'Proof of Stake' },
+      { href: '/glossaire/staking', label: 'Staking' },
+      { href: '/glossaire/defi', label: 'DeFi' },
+    ],
+  },
+];
+
+const formattedDate = new Date(post.data.pubDate).toLocaleDateString('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={`${post.data.title} | CryptoSous`}
+  description={post.data.description}
+  ogImage={post.data.image}
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <span class="text-text-secondary">{post.data.title}</span>
+      </nav>
+
+      <!-- Header -->
+      <header class="mb-10">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="px-2.5 py-0.5 text-xs font-semibold bg-violet/10 text-violet-light rounded-full border border-violet/20">
+            {post.data.category}
+          </span>
+          {post.data.readingTime && (
+            <span class="text-xs text-text-muted">{post.data.readingTime} de lecture</span>
+          )}
+        </div>
+
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          {post.data.title}
+        </h1>
+
+        <p class="text-body-lg text-text-secondary leading-relaxed mb-6">
+          {post.data.description}
+        </p>
+
+        <div class="flex items-center gap-4 text-sm text-text-muted border-t border-border pt-4">
+          <span>Par <strong class="text-text-secondary">{post.data.author}</strong></span>
+          <span>·</span>
+          <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
+        </div>
+      </header>
+
+      <!-- Hero Image -->
+      {post.data.image && (
+        <div class="mb-10 rounded-card overflow-hidden border border-border">
+          <img
+            src={post.data.image}
+            alt={post.data.title}
+            class="w-full h-auto object-cover aspect-video"
+            loading="eager"
+          />
+        </div>
+      )}
+
+      <!-- Content -->
+      <article class="prose-custom">
+        <Content />
+      </article>
+
+      <!-- Cross-silo links -->
+      <section class="mt-12">
+        <CrossLinks groups={crossLinkGroups} />
+      </section>
+
+      <!-- Disclaimer -->
+      <div class="mt-8 p-4 rounded-card border border-border bg-surface-raised/20">
+        <p class="text-xs text-text-muted leading-relaxed">
+          Cet article est publie a titre informatif. Il ne constitue pas un conseil en investissement. Les cryptomonnaies sont des actifs volatils. Faites vos propres recherches avant toute decision financiere.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- Schema.org Article -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "author": {
+      "@type": "Organization",
+      "name": post.data.author,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "CryptoSous",
+      "url": "https://crypto-sous.fr",
+    },
+    "datePublished": post.data.pubDate.toISOString(),
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://crypto-sous.fr/${post.id}/`,
+    },
+  })} />
+</BaseLayout>
+
+<style is:global>
+  .prose-custom h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-h3);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-primary);
+  }
+  .prose-custom h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-primary);
+  }
+  .prose-custom p {
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .prose-custom strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .prose-custom a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-custom a:hover {
+    color: var(--color-gold-light);
+  }
+  .prose-custom ul, .prose-custom ol {
+    color: var(--color-text-secondary);
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .prose-custom li {
+    margin-bottom: 0.5rem;
+    line-height: 1.75;
+  }
+  .prose-custom blockquote {
+    border-left: 3px solid var(--color-gold);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+  .prose-custom hr {
+    border-color: var(--color-border);
+    margin: 2rem 0;
+  }
+</style>

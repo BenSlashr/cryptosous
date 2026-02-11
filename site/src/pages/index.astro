@@ -1,0 +1,27 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import HeroEditorial from '@/components/HeroEditorial.astro';
+import MarketBar from '@/components/MarketBar.astro';
+import BentoGrid from '@/components/BentoGrid.astro';
+import CategoryCards from '@/components/CategoryCards.astro';
+import AnalysisSection from '@/components/AnalysisSection.astro';
+import NewsletterCTA from '@/components/NewsletterCTA.astro';
+import VideoSection from '@/components/VideoSection.astro';
+import Footer from '@/components/Footer.astro';
+---
+
+<BaseLayout title="CryptoSous — L'actualité crypto, DeFi & Web3">
+  <Navbar />
+  <main>
+    <HeroEditorial />
+    <MarketBar />
+    <BentoGrid />
+    <CategoryCards />
+    <AnalysisSection />
+    <NewsletterCTA />
+    <VideoSection />
+  </main>
+  <Footer />
+</BaseLayout>

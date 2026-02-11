@@ -1,0 +1,189 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import { getCollection, render } from 'astro:content';
+import CrossLinks from '@/components/CrossLinks.astro';
+import { getLinksForGlossaryPage } from '@/data/internal-links';
+
+export async function getStaticPaths() {
+  const terms = await getCollection('glossaire');
+  return terms.map((term) => ({
+    params: { slug: term.data.slug },
+    props: { term },
+  }));
+}
+
+const { term } = Astro.props;
+const { Content } = await render(term);
+
+// Get related terms data
+const allTerms = await getCollection('glossaire');
+const relatedTermsData = allTerms.filter((t) =>
+  term.data.relatedTerms.includes(t.data.slug)
+);
+
+const difficultyLabels: Record<string, string> = {
+  'débutant': 'Débutant',
+  'intermédiaire': 'Intermédiaire',
+  'avancé': 'Avancé',
+};
+
+const difficultyColors: Record<string, string> = {
+  'débutant': 'bg-positive/10 text-positive border-positive/20',
+  'intermédiaire': 'bg-gold/10 text-gold border-gold/20',
+  'avancé': 'bg-violet/10 text-violet-light border-violet/20',
+};
+
+const crossLinkGroups = getLinksForGlossaryPage(term.data.slug, term.data.relatedCryptos);
+
+const categoryLabels: Record<string, string> = {
+  blockchain: 'Blockchain',
+  defi: 'DeFi',
+  trading: 'Trading',
+  'sécurité': 'Sécurité',
+  mining: 'Mining',
+  web3: 'Web3',
+  'réglementation': 'Réglementation',
+};
+---
+
+<BaseLayout
+  title={`${term.data.title} - Définition crypto | Glossaire CryptoSous`}
+  description={term.data.shortDefinition}
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <a href="/glossaire" class="hover:text-gold transition-colors cursor-pointer">Glossaire</a>
+        <span>/</span>
+        <span class="text-text-secondary">{term.data.title}</span>
+      </nav>
+
+      <!-- Header -->
+      <div class="mb-10">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="px-2.5 py-0.5 text-xs font-semibold bg-surface-raised text-text-secondary rounded-full border border-border">
+            {categoryLabels[term.data.category]}
+          </span>
+          <span class={`px-2.5 py-0.5 text-xs font-semibold rounded-full border ${difficultyColors[term.data.difficulty]}`}>
+            {difficultyLabels[term.data.difficulty]}
+          </span>
+        </div>
+
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          {term.data.title}
+        </h1>
+
+        <p class="text-body-lg text-text-secondary leading-relaxed">
+          {term.data.shortDefinition}
+        </p>
+      </div>
+
+      <!-- Content -->
+      <article class="prose-custom">
+        <Content />
+      </article>
+
+      <!-- Related Terms -->
+      {relatedTermsData.length > 0 && (
+        <section class="mt-12 pt-8 border-t border-border">
+          <h2 class="font-display font-700 text-h3 mb-4">Termes liés</h2>
+          <div class="flex flex-wrap gap-3">
+            {relatedTermsData.map((related) => (
+              <a
+                href={`/glossaire/${related.data.slug}`}
+                class="group cursor-pointer px-4 py-3 rounded-card border border-border hover:border-gold/40 bg-surface-raised/30 hover:bg-surface-hover transition-all"
+              >
+                <span class="text-sm font-medium group-hover:text-gold transition-colors">{related.data.title}</span>
+                <p class="text-xs text-text-muted mt-0.5 max-w-xs">{related.data.shortDefinition}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- All Terms Link -->
+      <div class="mt-8">
+        <a
+          href="/glossaire"
+          class="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-gold transition-colors cursor-pointer"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          Voir tout le glossaire
+        </a>
+      </div>
+
+      <!-- Cross-silo links -->
+      <section class="mt-10">
+        <CrossLinks groups={crossLinkGroups} />
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- Schema.org DefinedTerm -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    "name": term.data.title,
+    "description": term.data.shortDefinition,
+    "inDefinedTermSet": {
+      "@type": "DefinedTermSet",
+      "name": "Glossaire Crypto CryptoSous",
+      "url": "https://cryptosous.com/glossaire",
+    },
+  })} />
+</BaseLayout>
+
+<style is:global>
+  .prose-custom h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-h3);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-primary);
+  }
+  .prose-custom p {
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .prose-custom strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .prose-custom a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-custom a:hover {
+    color: var(--color-gold-light);
+  }
+  .prose-custom ul, .prose-custom ol {
+    color: var(--color-text-secondary);
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .prose-custom li {
+    margin-bottom: 0.5rem;
+  }
+  .prose-custom code {
+    font-family: var(--font-mono);
+    background: var(--color-surface-raised);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+  }
+</style>

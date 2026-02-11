@@ -1,0 +1,164 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import {
+  generateAllPairs,
+  POPULAR_PAIRS,
+  CRYPTO_SPECS,
+  getCoinSlug,
+  COMPARISON_COINS,
+  type ComparisonPair,
+} from '@/data/comparison-templates';
+
+const allPairs = generateAllPairs();
+
+// Top 10 popular pairs
+const popularPairs = POPULAR_PAIRS
+  .map(slug => allPairs.find(p => p.slug === slug))
+  .filter((p): p is ComparisonPair => p !== undefined);
+
+// Group all pairs by first coin
+const pairsByMainCoin: Record<string, ComparisonPair[]> = {};
+for (const pair of allPairs) {
+  const key = pair.specA.name;
+  if (!pairsByMainCoin[key]) pairsByMainCoin[key] = [];
+  pairsByMainCoin[key].push(pair);
+}
+
+const title = 'Comparer les cryptomonnaies — Comparatifs détaillés | CryptoSous';
+const description = `Comparez les principales cryptomonnaies entre elles : Bitcoin vs Ethereum, Solana vs Cardano et ${allPairs.length - 2} autres comparaisons. Cours en direct, analyse technique et perspectives investissement.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <span class="text-text-secondary">Comparer</span>
+      </nav>
+
+      <!-- H1 -->
+      <div class="mb-12">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          Comparer les <span class="text-gradient-gold">cryptomonnaies</span>
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-2xl">
+          {allPairs.length} comparatifs détaillés entre les principales cryptos. Cours en direct, données techniques, analyse et verdict pour vous aider à choisir.
+        </p>
+      </div>
+
+      <!-- Popular comparisons -->
+      <section class="mb-16">
+        <h2 class="font-display font-700 text-h2 mb-6">Comparaisons populaires</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {popularPairs.map((pair) => (
+            <a
+              href={`/comparer/${pair.slug}`}
+              class="flex items-center gap-4 p-5 rounded-xl border border-border bg-surface-raised/30 hover:border-gold/50 hover:bg-surface-hover transition-all cursor-pointer group"
+            >
+              <div class="flex items-center gap-3 flex-1">
+                <div class="flex flex-col items-center">
+                  <span class="text-sm font-display font-bold text-gold">{pair.specA.symbol}</span>
+                  <span class="text-xs text-text-muted">{pair.specA.name}</span>
+                </div>
+                <div class="flex-shrink-0 w-8 h-8 rounded-full border border-border flex items-center justify-center text-xs text-text-muted font-bold">
+                  VS
+                </div>
+                <div class="flex flex-col items-center">
+                  <span class="text-sm font-display font-bold text-violet">{pair.specB.symbol}</span>
+                  <span class="text-xs text-text-muted">{pair.specB.name}</span>
+                </div>
+              </div>
+              <svg class="w-4 h-4 text-text-muted group-hover:text-gold transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- All comparisons grouped by main crypto -->
+      <section>
+        <h2 class="font-display font-700 text-h2 mb-8">Toutes les comparaisons</h2>
+
+        <div class="space-y-10">
+          {Object.entries(pairsByMainCoin).map(([mainCoinName, pairs]) => (
+            <div>
+              <h3 class="font-display font-700 text-h3 mb-4 flex items-center gap-2">
+                <span class="text-gold">{mainCoinName}</span>
+                <span class="text-xs text-text-muted font-normal">({pairs.length} comparaisons)</span>
+              </h3>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {pairs.map((pair) => (
+                  <a
+                    href={`/comparer/${pair.slug}`}
+                    class="flex flex-col items-center gap-1 p-3 rounded-lg border border-border bg-surface-raised/20 hover:border-gold/40 hover:bg-surface-hover transition-all cursor-pointer group text-center"
+                  >
+                    <span class="text-xs font-mono text-text-muted">
+                      {pair.specA.symbol} vs {pair.specB.symbol}
+                    </span>
+                    <span class="text-sm font-medium text-text-primary group-hover:text-gold transition-colors">
+                      vs {pair.specB.name}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- SEO text -->
+      <section class="mt-16">
+        <h2 class="font-display font-700 text-h2 mb-4">Pourquoi comparer les cryptomonnaies ?</h2>
+        <div class="text-text-secondary leading-relaxed space-y-4">
+          <p>
+            Avec des milliers de cryptomonnaies sur le marché, choisir où investir peut être déroutant. Nos comparatifs détaillés analysent les {allPairs.length} combinaisons entre les 15 principales cryptos : Bitcoin, Ethereum, Solana, XRP, BNB, Cardano, Dogecoin, Avalanche, Polkadot, Chainlink, TRON, Litecoin, Monero, Stellar et Sui.
+          </p>
+          <p>
+            Chaque comparaison inclut les cours en temps réel, un graphique de performance normalisée, un tableau technique comparatif (consensus, TPS, frais, smart contracts) et une analyse éditoriale couvrant les cas d'usage, les perspectives d'investissement et un verdict nuancé.
+          </p>
+          <p>
+            Ces comparatifs ne constituent pas des conseils en investissement. Ils sont conçus pour vous donner les informations nécessaires pour faire vos propres recherches (DYOR) et prendre des décisions éclairées.
+          </p>
+        </div>
+      </section>
+
+      <!-- Cross-linking -->
+      <section class="mt-12">
+        <div class="flex flex-wrap gap-3">
+          <a href="/prix" class="px-4 py-2 rounded-lg text-sm border border-border text-text-secondary hover:border-gold hover:text-gold transition-colors cursor-pointer">
+            Tous les prix crypto
+          </a>
+          <a href="/outils/convertisseur" class="px-4 py-2 rounded-lg text-sm border border-border text-text-secondary hover:border-gold hover:text-gold transition-colors cursor-pointer">
+            Convertisseur crypto
+          </a>
+          <a href="/outils/calculateur-dca" class="px-4 py-2 rounded-lg text-sm border border-border text-text-secondary hover:border-gold hover:text-gold transition-colors cursor-pointer">
+            Calculateur DCA
+          </a>
+          <a href="/glossaire" class="px-4 py-2 rounded-lg text-sm border border-border text-text-secondary hover:border-gold hover:text-gold transition-colors cursor-pointer">
+            Glossaire crypto
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- Schema.org BreadcrumbList -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://cryptosous.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Comparer les cryptomonnaies" },
+    ],
+  })} />
+</BaseLayout>

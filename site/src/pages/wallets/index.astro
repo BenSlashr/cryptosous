@@ -1,0 +1,183 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import { getWalletsSortedByScore } from '@/data/wallet-reviews';
+
+const year = new Date().getFullYear();
+const month = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+const wallets = getWalletsSortedByScore();
+---
+
+<BaseLayout
+  title={`Meilleurs wallets crypto ${year} : Comparatif hardware wallets | CryptoSous`}
+  description={`Classement des meilleurs hardware wallets crypto en ${year}. Comparatif Ledger, Trezor, BitBox : sécurité, prix, cryptos supportées et facilité d'utilisation.`}
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <span class="text-text-secondary">Wallets</span>
+      </nav>
+
+      <!-- Hero -->
+      <div class="mb-12">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          Meilleurs <span class="text-gradient-gold">wallets crypto</span> {year}
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-2xl">
+          Notre sélection indépendante des meilleurs hardware wallets pour sécuriser vos cryptomonnaies. Ledger, Trezor, BitBox : sécurité, prix et facilité d'utilisation comparés.
+        </p>
+        <div class="mt-3">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs border border-border text-text-muted">
+            <span class="w-1.5 h-1.5 rounded-full bg-positive animate-pulse"></span>
+            Mis à jour en {month}
+          </span>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="mb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {wallets.map((w, i) => (
+          <a
+            href={`/wallets/${w.slug}`}
+            class="group relative flex flex-col p-5 rounded-xl border border-border bg-surface-raised/30 hover:border-gold/50 hover:bg-surface-hover transition-all cursor-pointer"
+          >
+            {i === 0 && (
+              <span class="absolute -top-2 left-4 px-2 py-0.5 text-[10px] font-semibold bg-gold text-void rounded-full">
+                #1 Recommandé
+              </span>
+            )}
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs text-text-muted font-mono">{w.brand}</p>
+              <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-gold/10 border border-gold/20">
+                <span class="font-display font-700 text-xs text-gold">{w.overallScore}</span>
+              </span>
+            </div>
+            <h2 class="font-display font-700 text-lg text-text-primary group-hover:text-gold transition-colors mb-1">
+              {w.name}
+            </h2>
+            <p class="text-gold font-display font-700 text-lg mb-3">{w.price}</p>
+            <p class="text-xs text-text-secondary leading-relaxed flex-1 mb-4">
+              {w.verdict.length > 120 ? w.verdict.slice(0, 120) + '...' : w.verdict}
+            </p>
+            <div class="flex flex-wrap gap-2">
+              {w.hasBluetooth && (
+                <span class="px-2 py-0.5 text-[10px] font-mono text-info border border-info/20 rounded bg-info/5">Bluetooth</span>
+              )}
+              {w.hasTouchscreen && (
+                <span class="px-2 py-0.5 text-[10px] font-mono text-violet border border-violet/20 rounded bg-violet/5">Tactile</span>
+              )}
+              {w.specs.openSource && (
+                <span class="px-2 py-0.5 text-[10px] font-mono text-positive border border-positive/20 rounded bg-positive/5">Open source</span>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Comparison Table -->
+      <div class="mb-12 overflow-x-auto">
+        <h2 class="font-display font-700 text-h2 mb-6">Tableau comparatif rapide</h2>
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b border-border">
+              <th class="text-left py-3 px-3 text-text-muted font-medium text-xs uppercase tracking-wider">Wallet</th>
+              <th class="text-center py-3 px-3 text-text-muted font-medium text-xs uppercase tracking-wider">Score</th>
+              <th class="text-center py-3 px-3 text-text-muted font-medium text-xs uppercase tracking-wider">Prix</th>
+              <th class="text-center py-3 px-3 text-text-muted font-medium text-xs uppercase tracking-wider">Cryptos</th>
+              <th class="text-center py-3 px-3 text-text-muted font-medium text-xs uppercase tracking-wider">Bluetooth</th>
+              <th class="text-center py-3 px-3 text-text-muted font-medium text-xs uppercase tracking-wider">Open source</th>
+            </tr>
+          </thead>
+          <tbody>
+            {wallets.map((w) => (
+              <tr class="border-b border-border/50 hover:bg-surface-hover/30 transition-colors">
+                <td class="py-3 px-3">
+                  <a href={`/wallets/${w.slug}`} class="font-display font-600 text-text-primary hover:text-gold transition-colors cursor-pointer">
+                    {w.name}
+                  </a>
+                  <p class="text-xs text-text-muted">{w.brand}</p>
+                </td>
+                <td class="py-3 px-3 text-center">
+                  <span class="font-display font-700 text-gold">{w.overallScore}</span>
+                </td>
+                <td class="py-3 px-3 text-center font-mono text-text-primary">{w.price}</td>
+                <td class="py-3 px-3 text-center font-mono text-text-primary">{w.specs.coinsSupported.toLocaleString('fr-FR')}+</td>
+                <td class="py-3 px-3 text-center">
+                  {w.hasBluetooth
+                    ? <span class="text-positive text-xs font-semibold">Oui</span>
+                    : <span class="text-text-muted text-xs">Non</span>
+                  }
+                </td>
+                <td class="py-3 px-3 text-center">
+                  {w.specs.openSource
+                    ? <span class="text-positive text-xs font-semibold">Oui</span>
+                    : <span class="text-text-muted text-xs">Non</span>
+                  }
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SEO Text -->
+      <section class="mb-12">
+        <h2 class="font-display font-700 text-h2 mb-4">Pourquoi utiliser un hardware wallet ?</h2>
+        <div class="text-text-secondary leading-relaxed space-y-4">
+          <p>
+            Un hardware wallet (portefeuille matériel) est un appareil physique qui stocke vos clés privées crypto hors ligne, à l'abri des hackers et des malwares. Contrairement au stockage sur un exchange (Binance, Coinbase), un hardware wallet vous donne le contrôle total de vos fonds : "Not your keys, not your coins."
+          </p>
+          <p>
+            Le choix entre Ledger, Trezor et BitBox dépend de vos priorités. Ledger offre le plus grand écosystème (Ledger Live, DeFi, Bluetooth). Trezor mise sur la transparence avec son firmware open source. BitBox se distingue par sa fabrication suisse et son backup MicroSD innovant.
+          </p>
+          <p>
+            Pour la plupart des investisseurs, nous recommandons le Ledger Nano X ou le Trezor Safe 5 comme premier hardware wallet. Si vous investissez régulièrement, combinez un hardware wallet avec une <a href="/plateformes" class="text-gold hover:underline">plateforme d'échange</a> pour acheter, puis transférez sur votre wallet pour le stockage long terme.
+          </p>
+        </div>
+      </section>
+
+      <!-- Cross-linking -->
+      <section class="mb-12">
+        <h2 class="font-display font-700 text-h2 mb-6">Ressources complémentaires</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <a href="/plateformes" class="flex flex-col items-center gap-2 p-4 rounded-xl border border-border bg-surface-raised/30 hover:border-gold/50 hover:bg-surface-hover transition-all cursor-pointer group text-center">
+            <span class="text-sm font-medium text-text-primary group-hover:text-gold transition-colors">Plateformes crypto</span>
+            <span class="text-xs text-text-muted">Exchanges comparés</span>
+          </a>
+          <a href="/comparer" class="flex flex-col items-center gap-2 p-4 rounded-xl border border-border bg-surface-raised/30 hover:border-gold/50 hover:bg-surface-hover transition-all cursor-pointer group text-center">
+            <span class="text-sm font-medium text-text-primary group-hover:text-gold transition-colors">Comparer les cryptos</span>
+            <span class="text-xs text-text-muted">105 comparaisons</span>
+          </a>
+          <a href="/outils" class="flex flex-col items-center gap-2 p-4 rounded-xl border border-border bg-surface-raised/30 hover:border-gold/50 hover:bg-surface-hover transition-all cursor-pointer group text-center">
+            <span class="text-sm font-medium text-text-primary group-hover:text-gold transition-colors">Outils crypto</span>
+            <span class="text-xs text-text-muted">Convertisseur, DCA...</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
+      <div class="p-5 rounded-card border border-border bg-surface/50 text-xs text-text-muted leading-relaxed">
+        <strong class="text-text-secondary">Avertissement :</strong> Les cryptomonnaies sont des actifs volatils. Investir comporte des risques de perte en capital. Ce classement ne constitue pas un conseil en investissement. Certains liens sont des liens d'affiliation. Faites vos propres recherches (DYOR).
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- Schema.org BreadcrumbList -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://cryptosous.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Wallets" },
+    ],
+  })} />
+</BaseLayout>

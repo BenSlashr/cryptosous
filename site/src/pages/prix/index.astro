@@ -1,0 +1,136 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import { EXCLUDED_COINS, type CoinMarketData } from '@/data/crypto-templates';
+
+// Fetch at build time
+const res = await fetch(
+  'https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=250&page=1'
+);
+const allCoins: CoinMarketData[] = await res.json();
+const coins = allCoins.filter(c => !EXCLUDED_COINS.has(c.id)).slice(0, 200);
+
+const topCoins = coins.slice(0, 20);
+const restCoins = coins.slice(20);
+---
+
+<BaseLayout
+  title="Prix Crypto en Direct — Cours Bitcoin, Ethereum et 200 cryptos | CryptoSous"
+  description="Suivez le cours de 200 cryptomonnaies en temps réel : Bitcoin, Ethereum, Solana et altcoins. Graphiques interactifs, stats clés et analyses en français."
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <span class="text-text-secondary">Prix crypto</span>
+      </nav>
+
+      <!-- Header -->
+      <div class="mb-12">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          Prix <span class="text-gradient-gold">Crypto</span> en direct
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-2xl">
+          Cours en temps réel de {coins.length} cryptomonnaies. Cliquez sur une crypto pour voir le graphique, les stats détaillées et notre analyse.
+        </p>
+        <p class="text-sm text-text-muted mt-2">{coins.length} cryptos suivies</p>
+      </div>
+
+      <!-- Top 20 -->
+      <section class="mb-12">
+        <h2 class="font-display font-700 text-h3 mb-5 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-gold"></span>
+          Top 20
+        </h2>
+        <div class="space-y-2">
+          {topCoins.map((coin, i) => (
+            <a
+              href={`/prix/${coin.id}`}
+              class="group cursor-pointer flex items-center gap-4 p-4 rounded-card border border-border hover:border-gold/30 bg-surface-raised/20 hover:bg-surface-hover/50 transition-all hover:shadow-card"
+            >
+              <span class="w-7 text-sm font-mono text-text-muted text-right flex-shrink-0">
+                {i + 1}
+              </span>
+              <img src={coin.image} alt={coin.name} class="w-8 h-8 rounded-full flex-shrink-0" loading="lazy" />
+              <div class="flex-grow min-w-0">
+                <div class="flex items-center gap-2">
+                  <h3 class="font-display font-700 text-body-lg group-hover:text-gold transition-colors">{coin.name}</h3>
+                  <span class="text-xs text-text-muted font-mono">{coin.symbol.toUpperCase()}</span>
+                </div>
+              </div>
+              <div class="text-right flex-shrink-0">
+                <p class="text-sm font-mono font-medium text-text-primary">
+                  {coin.current_price.toLocaleString('fr-FR', { maximumFractionDigits: coin.current_price >= 1 ? 2 : 6 })} €
+                </p>
+                <p class={`text-xs font-mono ${coin.price_change_percentage_24h >= 0 ? 'text-positive' : 'text-negative'}`}>
+                  {coin.price_change_percentage_24h >= 0 ? '+' : ''}{coin.price_change_percentage_24h?.toFixed(1)}%
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- Rest -->
+      <section>
+        <h2 class="font-display font-700 text-h3 mb-5 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-violet-light"></span>
+          Altcoins & mid caps
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+          {restCoins.map((coin) => (
+            <a
+              href={`/prix/${coin.id}`}
+              class="group cursor-pointer flex items-center gap-2.5 p-3 rounded-card border border-border hover:border-gold/30 bg-surface-raised/20 hover:bg-surface-hover/50 transition-all"
+            >
+              <img src={coin.image} alt={coin.name} class="w-6 h-6 rounded-full flex-shrink-0" loading="lazy" />
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-text-primary group-hover:text-gold transition-colors truncate">{coin.name}</p>
+                <p class="text-[10px] text-text-muted font-mono">{coin.symbol.toUpperCase()} · #{coin.market_cap_rank}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- SEO Text -->
+      <section class="mt-16 space-y-6">
+        <h2 class="font-display font-700 text-h2 mb-4">Suivre les cours crypto en temps réel</h2>
+        <p class="text-text-secondary leading-relaxed">
+          Les cryptomonnaies s'échangent 24 heures sur 24, 7 jours sur 7, sur des centaines de plateformes dans le monde. Le prix que vous voyez ici est une moyenne pondérée calculée par CoinGecko à partir des données de plus de 600 exchanges. C'est le reflet le plus fidèle du cours mondial à un instant donné.
+        </p>
+        <p class="text-text-secondary leading-relaxed">
+          Chaque page crypto vous donne accès au cours en direct, un graphique interactif (7 jours, 30 jours, 1 an, historique complet), les statistiques clés (capitalisation, volume, ATH, supply) et une analyse détaillée rédigée en français. Utilisez ces données pour suivre vos investissements, identifier des points d'entrée ou simplement comprendre les dynamiques du marché.
+        </p>
+      </section>
+
+      <!-- Cross-linking -->
+      <section class="mt-12">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <a
+            href="/outils/convertisseur"
+            class="group cursor-pointer p-5 rounded-card border border-border hover:border-gold/30 bg-surface-raised/20 hover:bg-surface-hover/50 transition-all"
+          >
+            <h3 class="font-display font-700 group-hover:text-gold transition-colors mb-1">Convertisseur crypto</h3>
+            <p class="text-sm text-text-secondary">Convertissez vos cryptos en euros, dollars ou francs suisses.</p>
+          </a>
+          <a
+            href="/outils/calculateur-dca"
+            class="group cursor-pointer p-5 rounded-card border border-border hover:border-gold/30 bg-surface-raised/20 hover:bg-surface-hover/50 transition-all"
+          >
+            <h3 class="font-display font-700 group-hover:text-gold transition-colors mb-1">Calculateur DCA</h3>
+            <p class="text-sm text-text-secondary">Simulez un investissement progressif sur la crypto de votre choix.</p>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

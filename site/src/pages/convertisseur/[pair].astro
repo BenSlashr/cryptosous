@@ -1,0 +1,201 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import CryptoConverter from '@/components/tools/CryptoConverter';
+import { CRYPTO_SEO, CURRENCY_SEO } from '@/data/converter-seo';
+import CrossLinks from '@/components/CrossLinks.astro';
+import { getLinksForConverterPage, autoLink } from '@/data/internal-links';
+
+export function getStaticPaths() {
+  const paths = [];
+  for (const [cryptoKey, crypto] of Object.entries(CRYPTO_SEO)) {
+    for (const [, currency] of Object.entries(CURRENCY_SEO)) {
+      paths.push({
+        params: { pair: `${crypto.name.toLowerCase()}-en-${currency.slug}` },
+        props: { cryptoKey, crypto, currency },
+      });
+    }
+  }
+  return paths;
+}
+
+const { cryptoKey, crypto, currency } = Astro.props;
+
+// Générer les liens internes vers les autres paires de la même crypto
+const otherCurrencies = Object.values(CURRENCY_SEO).filter(c => c.code !== currency.code);
+const otherCryptos = Object.entries(CRYPTO_SEO)
+  .filter(([key]) => key !== cryptoKey)
+  .slice(0, 5);
+
+const faqItems = [
+  {
+    q: `Combien vaut 1 ${crypto.name} en ${currency.namePlural} ?`,
+    a: `Le prix du ${crypto.name} (${crypto.symbol}) en ${currency.namePlural} change en permanence. Notre convertisseur affiche le cours en temps réel, actualisé toutes les 30 secondes à partir des données agrégées de CoinGecko sur plus de 600 plateformes d'échange.`,
+  },
+  ...(crypto.faq || []),
+  {
+    q: `Comment convertir ${crypto.symbol} en ${currency.code.toUpperCase()} ?`,
+    a: `Utilisez notre convertisseur en haut de page : entrez la quantité de ${crypto.symbol} souhaitée et le résultat en ${currency.namePlural} s'affiche automatiquement. Les prix proviennent de CoinGecko et reflètent la moyenne pondérée des principaux exchanges mondiaux.`,
+  },
+];
+
+const title = `Convertir ${crypto.name} (${crypto.symbol}) en ${currency.name} - Cours en temps réel | CryptoSous`;
+const description = `Convertissez ${crypto.name} en ${currency.namePlural}. Prix ${crypto.symbol}/${currency.code.toUpperCase()} en direct, mis à jour toutes les 30 secondes. Taux de change fiable basé sur 600+ exchanges.`;
+const crossLinkGroups = getLinksForConverterPage(cryptoKey, crypto.name);
+const currentPath = `/convertisseur/${crypto.name.toLowerCase()}-en-${currency.slug}`;
+---
+
+<BaseLayout title={title} description={description}>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-gold transition-colors cursor-pointer">Outils</a>
+        <span>/</span>
+        <a href="/outils/convertisseur" class="hover:text-gold transition-colors cursor-pointer">Convertisseur</a>
+        <span>/</span>
+        <span class="text-text-secondary">{crypto.symbol} → {currency.code.toUpperCase()}</span>
+      </nav>
+
+      <!-- H1 + Intro -->
+      <div class="mb-10">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          Convertir <span class="text-gradient-gold">{crypto.name}</span> en {currency.name}
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-xl">
+          Calculez la valeur de vos {crypto.symbol} en {currency.namePlural} ({currency.symbol}). Cours en direct, actualisé toutes les 30 secondes.
+        </p>
+      </div>
+
+      <!-- Converter Widget pré-configuré -->
+      <CryptoConverter client:load defaultCoin={cryptoKey} defaultCurrency={currency.code} />
+
+      <!-- Liens rapides vers les autres devises -->
+      <div class="mt-8 flex flex-wrap gap-2">
+        <span class="text-sm text-text-muted py-1">Convertir aussi en :</span>
+        {otherCurrencies.map((cur) => (
+          <a
+            href={`/convertisseur/${crypto.name.toLowerCase()}-en-${cur.slug}`}
+            class="px-3 py-1.5 rounded-lg text-sm border border-border text-text-secondary hover:border-gold hover:text-gold transition-colors cursor-pointer"
+          >
+            {crypto.symbol} → {cur.code.toUpperCase()}
+          </a>
+        ))}
+      </div>
+
+      <!-- SEO Content -->
+      <section class="mt-16 space-y-8">
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">
+            {crypto.name}, c'est quoi ?
+          </h2>
+          <p class="text-text-secondary leading-relaxed" set:html={autoLink(crypto.introText, currentPath)} />
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">
+            Pourquoi convertir {crypto.symbol} en {currency.namePlural} ?
+          </h2>
+          <p class="text-text-secondary leading-relaxed" set:html={autoLink(crypto.whyConvert, currentPath)} />
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">
+            Qu'est-ce qui fait bouger le prix du {crypto.name} ?
+          </h2>
+          <p class="text-text-secondary leading-relaxed" set:html={autoLink(crypto.priceFactors, currentPath)} />
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="mt-16">
+        <h2 class="font-display font-700 text-h2 mb-8">Questions fréquentes</h2>
+        <div class="space-y-4">
+          {faqItems.map((item) => (
+            <details class="group rounded-card border border-border bg-surface-raised/30 overflow-hidden">
+              <summary class="flex items-center justify-between p-5 cursor-pointer text-text-primary font-medium hover:text-gold transition-colors">
+                {item.q}
+                <svg class="w-5 h-5 text-text-muted group-open:rotate-180 transition-transform flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-text-secondary leading-relaxed">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <!-- Maillage interne : autres cryptos -->
+      <section class="mt-16">
+        <h2 class="font-display font-700 text-h2 mb-6">Autres conversions en {currency.namePlural}</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {otherCryptos.map(([key, otherCrypto]) => (
+            <a
+              href={`/convertisseur/${otherCrypto.name.toLowerCase()}-en-${currency.slug}`}
+              class="flex items-center gap-3 p-4 rounded-xl border border-border bg-surface-raised/30 hover:border-gold/50 hover:bg-surface-hover transition-all cursor-pointer group"
+            >
+              <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-xs font-bold text-gold font-mono">
+                {otherCrypto.symbol.slice(0, 3)}
+              </div>
+              <div>
+                <p class="text-sm font-medium text-text-primary group-hover:text-gold transition-colors">{otherCrypto.name}</p>
+                <p class="text-xs text-text-muted">{otherCrypto.symbol} → {currency.code.toUpperCase()}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div class="mt-4">
+          <a href="/outils/convertisseur" class="text-sm text-gold hover:underline cursor-pointer">
+            Voir tous les convertisseurs →
+          </a>
+        </div>
+      </section>
+
+      <!-- Cross-silo links -->
+      <section class="mt-10">
+        <CrossLinks groups={crossLinkGroups} />
+      </section>
+
+      <!-- Disclaimer -->
+      <div class="mt-12 p-5 rounded-card border border-border bg-surface/50 text-xs text-text-muted leading-relaxed">
+        <strong class="text-text-secondary">Avertissement :</strong> Les prix affichés proviennent de CoinGecko et représentent une moyenne pondérée sur les principales plateformes d'échange. Ils peuvent différer du prix d'achat réel sur votre exchange. Cet outil ne constitue pas un conseil en investissement.
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- Schema.org FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    })),
+  })} />
+
+  <!-- Schema.org WebPage avec BreadcrumbList -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://cryptosous.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Outils", "item": "https://cryptosous.fr/outils" },
+      { "@type": "ListItem", "position": 3, "name": "Convertisseur", "item": "https://cryptosous.fr/outils/convertisseur" },
+      { "@type": "ListItem", "position": 4, "name": `${crypto.name} en ${currency.name}` },
+    ],
+  })} />
+</BaseLayout>

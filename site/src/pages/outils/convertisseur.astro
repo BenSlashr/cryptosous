@@ -1,0 +1,141 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import CryptoConverter from '@/components/tools/CryptoConverter';
+import { CRYPTO_SEO, CURRENCY_SEO } from '@/data/converter-seo';
+
+const faqItems = [
+  {
+    q: 'Comment fonctionne le convertisseur crypto ?',
+    a: 'Notre outil récupère les prix en direct depuis CoinGecko (mis à jour toutes les 30 secondes) et calcule la conversion au taux du marché. Les prix affichés sont des moyennes pondérées sur les principales plateformes d\'échange.',
+  },
+  {
+    q: 'Les taux affichés sont-ils fiables ?',
+    a: 'Les prix proviennent de CoinGecko, qui agrège les données de plus de 600 exchanges. Ils reflètent le cours moyen mondial. Un léger écart avec le prix réel d\'achat est possible selon la plateforme que vous utilisez.',
+  },
+  {
+    q: 'Quelles cryptomonnaies sont disponibles ?',
+    a: 'Le convertisseur couvre les 10 cryptos les plus échangées : Bitcoin (BTC), Ethereum (ETH), Solana (SOL), BNB, XRP, Cardano (ADA), Avalanche (AVAX), Polkadot (DOT), Chainlink (LINK) et Dogecoin (DOGE).',
+  },
+  {
+    q: 'Puis-je convertir entre deux cryptos ?',
+    a: 'Pour l\'instant, l\'outil convertit une crypto vers une devise fiat (EUR, USD, GBP, CHF). La conversion crypto-crypto arrive bientôt.',
+  },
+];
+---
+
+<BaseLayout
+  title="Convertisseur Crypto - Calculer le prix Bitcoin, Ethereum en euros | CryptoSous"
+  description="Convertissez Bitcoin, Ethereum, Solana et 10 autres cryptos en euros, dollars ou francs suisses. Prix en temps réel, mis à jour toutes les 30 secondes."
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-gold transition-colors cursor-pointer">Outils</a>
+        <span>/</span>
+        <span class="text-text-secondary">Convertisseur</span>
+      </nav>
+
+      <!-- H1 + Intro -->
+      <div class="mb-10">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          Convertisseur <span class="text-gradient-gold">Crypto</span>
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-xl">
+          Convertissez Bitcoin, Ethereum et les principales cryptos en euros ou en dollars. Prix en direct, actualisés toutes les 30 secondes.
+        </p>
+      </div>
+
+      <!-- Interactive Widget (React Island) -->
+      <CryptoConverter client:load />
+
+      <!-- SEO Content -->
+      <section class="mt-16 space-y-8">
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Comment convertir des cryptomonnaies en euros ?</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Le prix d'une cryptomonnaie varie en permanence. Il dépend de l'offre et de la demande sur les plateformes d'échange du monde entier. Notre convertisseur agrège ces données pour vous donner un taux de conversion fiable et actualisé.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            Sélectionnez la crypto et la devise de votre choix, entrez un montant, et le résultat s'affiche en temps réel. Utile avant un achat, pour vérifier la valeur de votre portefeuille ou simplement suivre les cours.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Pourquoi les prix varient d'un exchange à l'autre ?</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Chaque plateforme (Binance, Coinbase, Kraken...) a son propre carnet d'ordres. Les écarts de prix entre exchanges s'expliquent par des différences de liquidité, de volume et de localisation géographique. C'est ce qu'on appelle l'arbitrage.
+          </p>
+        </div>
+      </section>
+
+      <!-- FAQ Schema.org -->
+      <section class="mt-16">
+        <h2 class="font-display font-700 text-h2 mb-8">Questions fréquentes</h2>
+        <div class="space-y-4">
+          {faqItems.map((item) => (
+            <details class="group rounded-card border border-border bg-surface-raised/30 overflow-hidden">
+              <summary class="flex items-center justify-between p-5 cursor-pointer text-text-primary font-medium hover:text-gold transition-colors">
+                {item.q}
+                <svg class="w-5 h-5 text-text-muted group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-text-secondary leading-relaxed">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+      <!-- Maillage interne : toutes les conversions -->
+      <section class="mt-16">
+        <h2 class="font-display font-700 text-h2 mb-6">Toutes les conversions disponibles</h2>
+        <div class="space-y-8">
+          {Object.entries(CURRENCY_SEO).map(([, cur]) => (
+            <div>
+              <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-3">
+                En {cur.namePlural} ({cur.symbol})
+              </h3>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                {Object.entries(CRYPTO_SEO).map(([, crypto]) => (
+                  <a
+                    href={`/convertisseur/${crypto.name.toLowerCase()}-en-${cur.slug}`}
+                    class="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border text-sm text-text-secondary hover:border-gold/50 hover:text-gold transition-all cursor-pointer"
+                  >
+                    <span class="font-mono font-medium text-text-primary">{crypto.symbol}</span>
+                    <span class="text-text-muted">→</span>
+                    <span>{cur.code.toUpperCase()}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- FAQ Schema.org -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    })),
+  })} />
+</BaseLayout>

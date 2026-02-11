@@ -1,0 +1,264 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import CryptoPriceWidget from '@/components/tools/CryptoPriceWidget';
+import { generateCryptoPage, EXCLUDED_COINS, type CoinMarketData, type GeneratedCryptoPage } from '@/data/crypto-templates';
+import { CRYPTO_SEO } from '@/data/converter-seo';
+import { COMPARISON_COINS, getCoinSlug, CRYPTO_SPECS } from '@/data/comparison-templates';
+import CrossLinks from '@/components/CrossLinks.astro';
+import { getLinksForCryptoPage, autoLink } from '@/data/internal-links';
+
+export async function getStaticPaths() {
+  // Fetch top 200 coins from CoinGecko at build time
+  const res = await fetch(
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=250&page=1'
+  );
+  const allCoins: CoinMarketData[] = await res.json();
+
+  // Filter out stablecoins, wrapped tokens, etc.
+  const coins = allCoins.filter(c => !EXCLUDED_COINS.has(c.id)).slice(0, 200);
+
+  return coins.map(coin => {
+    const page = generateCryptoPage(coin);
+    return {
+      params: { crypto: coin.id },
+      props: { page, allSlugs: coins.slice(0, 50).map(c => ({ id: c.id, name: c.name, symbol: c.symbol.toUpperCase() })) },
+    };
+  });
+}
+
+interface Props {
+  page: GeneratedCryptoPage;
+  allSlugs: Array<{ id: string; name: string; symbol: string }>;
+}
+
+const { page, allSlugs } = Astro.props;
+
+// Other cryptos for internal linking (exclude current, take 8)
+const otherCryptos = allSlugs.filter(c => c.id !== page.coingeckoId).slice(0, 8);
+
+// Check if this crypto has converter pages
+const hasConverter = page.coingeckoId in (CRYPTO_SEO || {});
+
+// Check if this crypto has comparison pages
+const hasComparisons = (COMPARISON_COINS as readonly string[]).includes(page.coingeckoId);
+const comparisonSlug = getCoinSlug(page.coingeckoId);
+// Pick a comparison partner: bitcoin if not bitcoin, else ethereum
+const comparisonPartner = page.coingeckoId === 'bitcoin' ? 'ethereum' : 'bitcoin';
+const comparisonPartnerSlug = getCoinSlug(comparisonPartner);
+const comparisonPartnerSpec = CRYPTO_SPECS[comparisonPartner];
+const crossLinkGroups = getLinksForCryptoPage(page.coingeckoId, page.name, page.category);
+const currentPath = `/prix/${page.coingeckoId}`;
+---
+
+<BaseLayout title={page.metaTitle} description={page.metaDescription}>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <a href="/prix" class="hover:text-gold transition-colors cursor-pointer">Prix crypto</a>
+        <span>/</span>
+        <span class="text-text-secondary">{page.name}</span>
+      </nav>
+
+      <!-- H1 -->
+      <div class="mb-8">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          Prix <span class="text-gradient-gold">{page.name}</span>
+          <span class="text-h2 text-text-muted ml-2">({page.symbol})</span>
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-xl">
+          Cours du {page.name} en euros en temps réel. Graphique interactif, statistiques clés et analyse détaillée.
+        </p>
+      </div>
+
+      <!-- Interactive Widget -->
+      <CryptoPriceWidget
+        client:load
+        coinId={page.coingeckoId}
+        symbol={page.symbol}
+        name={page.name}
+      />
+
+      <!-- Quick actions -->
+      <div class="mt-6 flex flex-wrap gap-3">
+        {hasConverter && (
+          <a
+            href={`/convertisseur/${page.name.toLowerCase()}-en-euro`}
+            class="px-4 py-2 rounded-lg text-sm border border-border text-text-secondary hover:border-gold hover:text-gold transition-colors cursor-pointer"
+          >
+            Convertir {page.symbol} → EUR
+          </a>
+        )}
+        {hasComparisons && comparisonPartnerSpec && (
+          <a
+            href={`/comparer/${page.coingeckoId === 'bitcoin' ? 'bitcoin-vs-ethereum' : 'bitcoin-vs-' + comparisonSlug}`}
+            class="px-4 py-2 rounded-lg text-sm border border-border text-text-secondary hover:border-gold hover:text-gold transition-colors cursor-pointer"
+          >
+            Comparer avec {comparisonPartnerSpec.name}
+          </a>
+        )}
+        <a
+          href="/outils/calculateur-dca"
+          class="px-4 py-2 rounded-lg text-sm border border-border text-text-secondary hover:border-gold hover:text-gold transition-colors cursor-pointer"
+        >
+          Simuler un DCA
+        </a>
+        <a
+          href="/glossaire"
+          class="px-4 py-2 rounded-lg text-sm border border-border text-text-secondary hover:border-gold hover:text-gold transition-colors cursor-pointer"
+        >
+          Glossaire crypto
+        </a>
+      </div>
+
+      <!-- Editorial Content -->
+      <section class="mt-16 space-y-10">
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">
+            C'est quoi {page.name} ({page.symbol}) ?
+          </h2>
+          <p class="text-text-secondary leading-relaxed whitespace-pre-line" set:html={autoLink(page.whatIsIt, currentPath)} />
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">
+            Comment fonctionne {page.name} ?
+          </h2>
+          <p class="text-text-secondary leading-relaxed whitespace-pre-line" set:html={autoLink(page.howItWorks, currentPath)} />
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">
+            Qu'est-ce qui fait bouger le prix du {page.symbol} ?
+          </h2>
+          <p class="text-text-secondary leading-relaxed whitespace-pre-line" set:html={autoLink(page.priceFactors, currentPath)} />
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">
+            Points forts et risques
+          </h2>
+          <p class="text-text-secondary leading-relaxed whitespace-pre-line" set:html={autoLink(page.strengthsRisks, currentPath)} />
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">
+            Moments clés
+          </h2>
+          <div class="text-text-secondary leading-relaxed prose-custom" set:html={page.keyMilestones} />
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="mt-16">
+        <h2 class="font-display font-700 text-h2 mb-8">Questions fréquentes</h2>
+        <div class="space-y-4">
+          {page.faq.map((item) => (
+            <details class="group rounded-card border border-border bg-surface-raised/30 overflow-hidden">
+              <summary class="flex items-center justify-between p-5 cursor-pointer text-text-primary font-medium hover:text-gold transition-colors">
+                {item.q}
+                <svg class="w-5 h-5 text-text-muted group-open:rotate-180 transition-transform flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-text-secondary leading-relaxed">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <!-- Internal linking -->
+      <section class="mt-16">
+        <h2 class="font-display font-700 text-h2 mb-6">Autres cours crypto</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {otherCryptos.map((other) => (
+            <a
+              href={`/prix/${other.id}`}
+              class="flex flex-col items-center gap-2 p-4 rounded-xl border border-border bg-surface-raised/30 hover:border-gold/50 hover:bg-surface-hover transition-all cursor-pointer group text-center"
+            >
+              <span class="text-xs font-mono font-bold text-gold">{other.symbol}</span>
+              <span class="text-sm font-medium text-text-primary group-hover:text-gold transition-colors">{other.name}</span>
+            </a>
+          ))}
+        </div>
+        <div class="mt-4">
+          <a href="/prix" class="text-sm text-gold hover:underline cursor-pointer">
+            Voir tous les cours crypto →
+          </a>
+        </div>
+      </section>
+
+      <!-- Cross-silo links -->
+      <section class="mt-10">
+        <CrossLinks groups={crossLinkGroups} />
+      </section>
+
+      <!-- Disclaimer -->
+      <div class="mt-12 p-5 rounded-card border border-border bg-surface/50 text-xs text-text-muted leading-relaxed">
+        <strong class="text-text-secondary">Avertissement :</strong> Les prix affichés proviennent de CoinGecko et représentent une moyenne pondérée sur les principales plateformes d'échange. Cet outil ne constitue pas un conseil en investissement. Les performances passées ne présagent pas des performances futures.
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <!-- Schema.org FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": page.faq.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    })),
+  })} />
+
+  <!-- Schema.org BreadcrumbList -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://cryptosous.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Prix crypto", "item": "https://cryptosous.fr/prix" },
+      { "@type": "ListItem", "position": 3, "name": page.name },
+    ],
+  })} />
+</BaseLayout>
+
+<style is:global>
+  .prose-custom ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prose-custom li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+  .prose-custom li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-gold);
+  }
+  .prose-custom li strong {
+    color: var(--color-text-primary);
+  }
+</style>
