@@ -223,4 +223,12 @@ const faqItems = getFaqForSlug(lookupSlug);
   .prose-custom tbody tr:hover {
     background: rgba(245, 158, 11, 0.04);
   }
+
+  /* Mermaid diagrams (scoped to avoid breaking callout octicons) */
+  .prose-custom svg[id^="mermaid"] {
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem auto;
+    display: block;
+  }
 </style>

@@ -1,0 +1,150 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import TaxWorldMap from '@/components/tools/tax-map/TaxWorldMap';
+
+const faqItems = [
+  {
+    q: 'Quels pays ne taxent pas les crypto ?',
+    a: 'Plusieurs pays n\'imposent aucun impot sur les plus-values crypto pour les particuliers : les Emirats arabes unis (Dubai), Singapour, Hong Kong, la Suisse (gains en capital prives), El Salvador, Panama, les Bahamas, la Georgie et la Malaisie. Chaque pays a ses conditions specifiques - la Suisse applique un impot sur la fortune, Singapour peut requalifier le trading actif en revenu.',
+  },
+  {
+    q: 'Comment est taxe le Bitcoin en France ?',
+    a: 'En France, les plus-values crypto sont soumises au PFU (Prelevement Forfaitaire Unique) de 30% en 2025 (31,4% en 2026). Seules les conversions crypto vers euros declenchent l\'impot. Les echanges crypto-crypto ne sont pas imposables. Un seuil d\'exoneration existe si vos ventes totales ne depassent pas 305 euros par an. L\'option bareme progressif est possible si elle est plus avantageuse.',
+  },
+  {
+    q: 'Quel pays d\'Europe est le plus avantageux pour les crypto ?',
+    a: 'Le Luxembourg (0% apres 6 mois de detention), l\'Allemagne (0% apres 1 an de detention) et la Suisse (0% de gains en capital) sont les plus favorables. Le Portugal offre aussi une exoneration apres 365 jours. La Republique tcheque exonere les gains apres 3 ans. Le choix depend de votre profil : holder long terme ou trader actif.',
+  },
+  {
+    q: 'Les donnees de cette carte sont-elles fiables ?',
+    a: 'Les donnees sont compilees a partir de sources officielles (administrations fiscales, textes de loi) et mises a jour regulierement. La fiscalite crypto evolue vite : verifiez les dates de mise a jour et consultez un fiscaliste avant de prendre des decisions. Cette carte est un outil de comparaison, pas un conseil fiscal.',
+  },
+  {
+    q: 'Faut-il demenager pour payer moins d\'impots sur les crypto ?',
+    a: 'Changer de residence fiscale a des implications legales et personnelles importantes. La France applique un "exit tax" sur les plus-values latentes pour les patrimoines > 800 000 euros. Le transfert de residence doit etre reel (centre de vie, activite, famille). Un demenagement fiscal fictif est un delit. Consultez un avocat fiscaliste avant toute decision.',
+  },
+  {
+    q: 'Les stablecoins et le staking sont-ils imposes differemment ?',
+    a: 'Ca depend du pays. En France, les stablecoins sont traites comme les autres crypto (pas d\'impot tant qu\'on reste en crypto). Le staking est generalement impose comme revenu au moment de la reception des recompenses dans la plupart des pays (UK, USA, Australie), ou au moment de la vente dans d\'autres (France - interpretation en cours).',
+  },
+];
+---
+
+<BaseLayout
+  title="Carte Fiscalite Crypto Monde - Impots Bitcoin par Pays 2025 | CryptoSous"
+  description="Comparez la fiscalite crypto de 50 pays sur une carte interactive. Taux d'imposition Bitcoin, exonerations, regimes favorables. France, Suisse, Dubai, Portugal..."
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-gold transition-colors cursor-pointer">Outils</a>
+        <span>/</span>
+        <span class="text-text-secondary">Carte Fiscalite Crypto</span>
+      </nav>
+
+      <!-- H1 + Intro -->
+      <div class="mb-10">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          Carte de la <span class="text-gradient-gold">Fiscalite Crypto</span> dans le Monde
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-2xl">
+          Comparez les regimes fiscaux crypto de 50 pays. Cliquez sur un pays pour voir le detail, ajoutez-en jusqu'a 4 pour les comparer cote a cote.
+        </p>
+      </div>
+
+      <!-- Interactive Widget (React Island) -->
+      <TaxWorldMap client:only="react" />
+
+      <!-- SEO Content -->
+      <section class="mt-16 space-y-8 max-w-4xl">
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Fiscalite crypto dans le monde : panorama 2025</h2>
+          <p class="text-text-secondary leading-relaxed">
+            La taxation des cryptomonnaies varie d'un pays a l'autre. Certains Etats comme les Emirats arabes unis ou Singapour n'imposent aucun impot sur les gains en capital des particuliers. D'autres, comme la France ou l'Inde, appliquent un flat tax de 30%. Le Japon detient le record avec des taux pouvant atteindre 55% sur les gains crypto. Entre ces extremes, la plupart des pays europeens se situent entre 15% et 33%.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            La tendance globale est a la clarification : de plus en plus de pays adoptent des cadres specifiques aux actifs numeriques, remplacant les regimes generiques qui s'appliquaient par defaut. Le reglement MiCA en Europe, les guidelines de l'IRS aux Etats-Unis, ou le framework VARA a Dubai illustrent cette evolution.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Les pays sans impot sur les crypto</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Plusieurs juridictions n'imposent aucune taxe sur les plus-values crypto. Les Emirats arabes unis (Dubai et Abu Dhabi) n'ont pas d'impot sur le revenu pour les particuliers. Singapour et Hong Kong appliquent le meme principe pour les gains en capital. La Suisse exonere les gains en capital prives mais applique un impot sur la fortune cantonal.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            En Amerique latine, El Salvador a fait du Bitcoin une monnaie legale en 2021, avec une exoneration totale pour les investisseurs etrangers. Le Panama et les Bahamas profitent de regimes territoriaux favorables. En Europe, l'Allemagne et le Luxembourg offrent une exoneration totale apres une courte periode de detention (1 an et 6 mois).
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">France : le PFU de 30%</h2>
+          <p class="text-text-secondary leading-relaxed">
+            La France applique le Prelevement Forfaitaire Unique (PFU) de 30% sur les plus-values crypto (12,8% d'IR + 17,2% de prelevements sociaux). En 2026, le PFU passe a 31,4% suite a la hausse des prelevements sociaux. Les echanges crypto-crypto ne sont pas imposables et un seuil de 305 euros de cessions exonere les petits investisseurs.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            Compare a ses voisins, la France se situe dans la moyenne haute europeenne. L'Allemagne et le Luxembourg sont bien plus favorables pour les holders long terme. Mais le systeme francais a l'avantage d'etre simple et previsible, contrairement a des pays comme la Belgique ou la frontiere entre gestion "normale" et speculation reste floue.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">L'alternative portugaise et suisse</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Le Portugal a longtemps ete un paradis fiscal pour les crypto (0% jusqu'a fin 2022). Depuis 2023, un impot de 28% s'applique sur les gains a court terme, mais l'exoneration apres 365 jours de detention reste en vigueur. Pour les holders, le Portugal reste attractif.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            La Suisse n'impose pas les gains en capital des particuliers, mais un impot sur la fortune cantonal s'applique sur la valeur du portefeuille au 31 decembre. Les taux varient de 0,1% a 1% selon le canton. Zoug, la "Crypto Valley", combine un ecosysteme crypto dynamique et une fiscalite avantageuse. L'Allemagne offre un profil similaire avec son exoneration apres 1 an, mais le systeme progressif peut etre punitif pour les ventes a court terme.
+          </p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="mt-16 max-w-4xl">
+        <h2 class="font-display font-700 text-h2 mb-8">Questions frequentes</h2>
+        <div class="space-y-4">
+          {faqItems.map((item) => (
+            <details class="group rounded-card border border-border bg-surface-raised/30 overflow-hidden">
+              <summary class="flex items-center justify-between p-5 cursor-pointer text-text-primary font-medium hover:text-gold transition-colors">
+                {item.q}
+                <svg class="w-5 h-5 text-text-muted group-open:rotate-180 transition-transform flex-shrink-0 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-text-secondary leading-relaxed">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
+      <div class="mt-12 p-5 rounded-card border border-border bg-surface/50 text-xs text-text-muted leading-relaxed max-w-4xl">
+        <strong class="text-text-secondary">Avertissement :</strong> Cette carte est fournie a titre informatif et comparatif. Elle ne constitue pas un conseil fiscal, juridique ou financier. Les legislations evoluent rapidement : verifiez les dates de mise a jour et consultez un professionnel avant toute decision. Les taux indiques sont des approximations basees sur les regimes les plus courants pour les particuliers residents.
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    })),
+  })} />
+</BaseLayout>

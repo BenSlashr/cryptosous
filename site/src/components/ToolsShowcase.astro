@@ -1,0 +1,76 @@
+---
+const tools = [
+  {
+    title: 'Convertisseur Crypto',
+    description: 'Bitcoin, Ethereum et 10+ cryptos en euros, dollars ou francs suisses en temps reel.',
+    href: '/outils/convertisseur',
+    icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
+    color: 'text-gold',
+    bgColor: 'bg-gold/10 border-gold/20',
+  },
+  {
+    title: 'Calculateur DCA',
+    description: 'Simulez un investissement progressif et visualisez les resultats sur 1, 2 ou 5 ans.',
+    href: '/outils/calculateur-dca',
+    icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z',
+    color: 'text-violet-light',
+    bgColor: 'bg-violet/10 border-violet/20',
+  },
+  {
+    title: 'Calculateur Fiscal',
+    description: 'Calculez vos impots sur les plus-values crypto avec la methode PMPA. Export PDF.',
+    href: '/outils/calculateur-fiscal',
+    icon: 'M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z',
+    color: 'text-gold',
+    bgColor: 'bg-gold/10 border-gold/20',
+  },
+  {
+    title: 'Carte Fiscalite Monde',
+    description: 'Comparez la fiscalite crypto de 50 pays sur une carte interactive.',
+    href: '/outils/carte-fiscalite-crypto-monde',
+    icon: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+    color: 'text-violet-light',
+    bgColor: 'bg-violet/10 border-violet/20',
+  },
+  {
+    title: 'Timeline Bitcoin',
+    description: '17 ans d\'histoire Bitcoin sur une frise chronologique interactive avec cours BTC.',
+    href: '/outils/timeline-bitcoin',
+    icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+    color: 'text-gold',
+    bgColor: 'bg-gold/10 border-gold/20',
+  },
+];
+---
+
+<section class="py-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-10">
+      <h2 class="font-display font-800 text-2xl sm:text-3xl tracking-tight mb-3">
+        Outils <span class="text-gradient-gold">gratuits</span>
+      </h2>
+      <p class="text-text-secondary max-w-xl">
+        Convertisseur, calculateurs, carte interactive. Pas de compte requis, pas de pub.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {tools.map((tool) => (
+        <a
+          href={tool.href}
+          class="group flex items-start gap-4 p-5 rounded-xl border border-border hover:border-gold/30 bg-surface-raised/30 hover:bg-surface-hover/50 transition-all cursor-pointer"
+        >
+          <div class={`w-10 h-10 rounded-lg ${tool.bgColor} border flex items-center justify-center flex-shrink-0`}>
+            <svg class={`w-5 h-5 ${tool.color}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d={tool.icon} />
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <h3 class="font-display font-700 text-sm group-hover:text-gold transition-colors mb-1">{tool.title}</h3>
+            <p class="text-xs text-text-muted leading-relaxed">{tool.description}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

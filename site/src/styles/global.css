@@ -181,6 +181,89 @@ body {
   z-index: 0;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   GLOSSAIRE TOOLTIPS — CSS-only inline definitions
+   ═══════════════════════════════════════════════════════════════ */
+
+.glossaire-tooltip {
+  color: var(--color-gold);
+  text-decoration: underline dotted var(--color-gold-dim);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: help;
+  position: relative;
+}
+
+.glossaire-tooltip:hover {
+  color: var(--color-gold-light);
+}
+
+.glossaire-tooltip-content {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 280px;
+  width: max-content;
+  padding: 0.75rem 1rem;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Arrow */
+.glossaire-tooltip-content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--color-border);
+}
+
+/* Show on hover + focus */
+.glossaire-tooltip:hover .glossaire-tooltip-content,
+.glossaire-tooltip:focus .glossaire-tooltip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.glossaire-tooltip-title {
+  color: var(--color-gold);
+  font-size: var(--text-small);
+  font-family: var(--font-display);
+}
+
+.glossaire-tooltip-def {
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+}
+
+/* Mobile: tooltip below, left-aligned */
+@media (max-width: 640px) {
+  .glossaire-tooltip-content {
+    bottom: auto;
+    top: calc(100% + 10px);
+    left: 0;
+    transform: none;
+    max-width: 250px;
+  }
+  .glossaire-tooltip-content::after {
+    top: auto;
+    bottom: 100%;
+    left: 16px;
+    border-top-color: transparent;
+    border-bottom-color: var(--color-border);
+  }
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .animate-ticker,

@@ -1,0 +1,66 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  guides: CollectionEntry<'bitcoin'>[];
+}
+
+const { guides } = Astro.props;
+
+function entryIdToSlug(id: string): string {
+  if (id === 'index') return '';
+  if (id.endsWith('/index')) return id.slice(0, -'/index'.length);
+  return id;
+}
+
+const branchLabels: Record<string, string> = {
+  investir: 'Investir',
+  acheter: 'Acheter',
+  securite: 'Securite',
+  portefeuilles: 'Portefeuilles',
+  histoire: 'Histoire',
+  reglementation: 'Reglementation',
+  vendre: 'Vendre',
+  fonctionnement: 'Fonctionnement',
+  lightning: 'Lightning',
+  minage: 'Minage',
+  apprendre: 'Apprendre',
+};
+---
+
+<section class="py-16 border-t border-border">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-10">
+      <h2 class="font-display font-800 text-2xl sm:text-3xl tracking-tight mb-3">
+        Guides <span class="text-gradient-gold">populaires</span>
+      </h2>
+      <p class="text-text-secondary max-w-xl">
+        Une selection de guides pour bien demarrer, quel que soit votre niveau.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {guides.map((guide) => (
+        <a
+          href={`/bitcoin/${entryIdToSlug(guide.id)}`}
+          class="group flex flex-col p-5 rounded-xl border border-border hover:border-gold/30 bg-surface-raised/20 hover:bg-surface-hover/30 transition-all cursor-pointer"
+        >
+          <div class="flex items-center gap-2 mb-3">
+            <span class="px-2 py-0.5 text-xs font-medium bg-violet/10 text-violet-light border border-violet/20 rounded-full">
+              {branchLabels[guide.data.branch] || guide.data.branch}
+            </span>
+            {guide.data.readingTime && (
+              <span class="text-xs text-text-muted">{guide.data.readingTime}</span>
+            )}
+          </div>
+          <h3 class="font-display font-700 text-base group-hover:text-gold transition-colors mb-2 line-clamp-2">
+            {guide.data.title}
+          </h3>
+          <p class="text-sm text-text-muted leading-relaxed line-clamp-2">
+            {guide.data.description}
+          </p>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

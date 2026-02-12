@@ -9,54 +9,65 @@
 
 ### Workflow obligatoire pour chaque article
 
-**Etape 1 : Generer un brief SEO via l'API Slashr**
+**Etape 1 : Preprocessing (script bash)**
 
-Avant de rediger tout contenu, appeler l'API brief pour obtenir l'analyse semantique SERP, le plan de contenu et les mots-cles obligatoires :
-
-```bash
-curl -s -X POST "https://outils.agence-slashr.fr/brief-contenu/api/generate-brief" \
-  -H "Content-Type: application/json" \
-  -d '{"keyword": "MOT_CLE_PRINCIPAL", "location": "France", "language": "fr"}' \
-  | jq .
-```
-
-La reponse contient :
-- `semanticData.KW_obligatoires` : mots-cles a integrer obligatoirement (avec frequences cibles)
-- `semanticData.KW_complementaires` : mots-cles secondaires a integrer si pertinent
-- `semanticData.recommended_words` : nombre de mots recommande
-- `serpData.organicResults` : top 10 SERP avec structure Hn des concurrents
-- `contentPlan.sections` : plan de contenu suggere avec H2/H3 — **c'est un minimum, pas un maximum**. Le plan du brief est une base de depart : ajouter des sections supplementaires si le sujet le justifie, si la recherche Tavily revele des angles non couverts, ou si l'expertise du redacteur le permet. Ne jamais se limiter au plan du brief quand on peut faire mieux.
-- `contentPlan.h1` : titre H1 suggere
-- `contentAnalysis.writingStyle` : ton et style recommandes
-- `seoMetadata` : slug, title, metaDescription suggeres
-
-**Etape 2 : Recherche factuelle via Tavily**
-
-Appeler l'API Tavily pour obtenir des donnees recentes, des chiffres verifies et des sources citables :
+Lancer le script de preprocessing qui appelle les APIs (Tavily, Slashr, fal.ai) et prepare les donnees :
 
 ```bash
-cat > /tmp/tavily_req.json << 'EOF'
-{"api_key": "TAVILY_API_KEY_FROM_ENV", "query": "REQUETE_DE_RECHERCHE", "search_depth": "advanced", "max_results": 5, "include_answer": true}
-EOF
-curl -s -X POST "https://api.tavily.com/search" -H "Content-Type: application/json" -d @/tmp/tavily_req.json | jq .
+./scripts/preprocess-article.sh <slug> <keyword> <branch> <parent> <order>
 ```
 
-La cle API est dans `site/.env` sous `TAVILY_API_KEY`. La reponse contient :
-- `answer` : synthese directe de la recherche
-- `results[].title` / `results[].url` : sources citables
-- `results[].content` : extraits de contenu avec donnees factuelles
+Parametres :
+- `slug` : identifiant URL de l'article (ex: `dca-bitcoin`)
+- `keyword` : mot-cle SEO principal (ex: `"DCA bitcoin strategie"`)
+- `branch` : branche du contenu (ex: `investir`)
+- `parent` : slug du hub parent (ex: `investir-bitcoin`)
+- `order` : ordre dans la branche (ex: `1`)
 
-Utiliser ces donnees pour enrichir l'article avec des chiffres a jour (prix, stats, dates) et des faits verifies. Adapter la requete au sujet de l'article.
+Le script genere `/tmp/preprocess-{slug}/prompt-data.md` qui contient :
+- Brief SEO Slashr (mots-cles obligatoires, complementaires, plan de contenu, nombre de mots)
+- Recherche factuelle Tavily (synthese, sources, chiffres)
+- Frontmatter suggere (title, description, image)
+- Contenu du hub parent (pour eviter les repetitions)
 
-**Etape 3 : Generer l'image hero de l'article**
+Le plan de contenu du brief est une base de depart : ajouter des sections supplementaires si le sujet le justifie, si la recherche Tavily revele des angles non couverts, ou si l'expertise du redacteur le permet.
 
-Chaque article DOIT avoir une image hero. Utiliser l'API fal.ai (voir section "Generation d'images" ci-dessous). Sauvegarder dans `site/public/images/blog/{slug}.webp` et referencer dans le frontmatter : `image: "/images/blog/{slug}.webp"`.
+Plusieurs articles peuvent etre preprocesses en parallele :
+```bash
+./scripts/preprocess-article.sh slug1 kw1 branch1 parent1 1 &
+./scripts/preprocess-article.sh slug2 kw2 branch2 parent2 2 &
+wait
+```
 
-**Etape 4 : Rediger en suivant le brief + les patterns anti-IA**
+**Structure des fichiers et frontmatter**
+
+Chemin : `site/src/content/bitcoin/{branch-slug}/{article-slug}.md`
+Images : `site/public/images/bitcoin/{article-slug}.webp`
+
+Frontmatter obligatoire :
+```yaml
+---
+title: "Titre SEO de l'article"
+description: "Meta description 150-160 caracteres"
+type: guide          # guide (article) ou hub (page de branche)
+branch: investir     # branche parente (acheter, vendre, fonctionnement, etc.)
+parent: investir-bitcoin  # slug du hub parent
+order: 3             # ordre d'affichage dans la branche
+image: "/images/bitcoin/{slug}.webp"
+readingTime: "12 min"
+faqSchema: true      # optionnel, active le schema FAQ si l'article a une section FAQ
+---
+```
+
+**Etape 2 : Rediger en lisant les donnees preprocessees**
+
+Lire `/tmp/preprocess-{slug}/prompt-data.md` puis rediger l'article en suivant les patterns anti-IA ci-dessous.
+
+**Nombre de mots cible : 2000 a 2800 mots.** En dessous de 2000, l'article manque de profondeur. Au dessus de 2800, ca devient difficile a lire.
 
 **REGLE CRITIQUE : TOUJOURS ecrire avec les accents francais** (e, e, e, a, u, c, i, o, u). Un article sans accents est un article a refaire. Les seuls caracteres typographiques bannis sont les guillemets/apostrophes/tirets typographiques (voir ci-dessous), PAS les accents.
 
-**Etape 5 : Ajouter des callouts (blocs enrichis)**
+**Etape 3 : Ajouter des callouts (blocs enrichis)**
 
 Chaque article doit contenir 3 a 5 callouts au format GitHub Alerts pour enrichir l'experience de lecture. Syntaxe markdown :
 
@@ -82,6 +93,43 @@ Regles pour les callouts :
 - 1 a 3 phrases max par callout - dense en information
 - Jamais de fluff ou de reformulation du paragraphe precedent
 - Chaque callout doit apporter une info actionnable ou un fait nouveau
+
+**Etape 3b : Ajouter des diagrammes Mermaid**
+
+Chaque article doit contenir 1 a 3 diagrammes Mermaid pour illustrer les concepts. Un article de 2500 mots sans schema est dur a lire.
+
+Types de diagrammes adaptes :
+- `graph TD` ou `graph LR` : flux, processus, hierarchies
+- `sequenceDiagram` : interactions entre acteurs
+- `pie` : repartitions, parts de marche
+- `timeline` : chronologies (articles historiques)
+
+Palette obligatoire (design system CryptoSous) :
+```
+style NODE fill:#141D30,stroke:#F59E0B,color:#F1F5F9   (noeud principal - or)
+style NODE fill:#141D30,stroke:#8B5CF6,color:#F1F5F9   (noeud secondaire - violet)
+style NODE fill:#1A2540,stroke:#8B5CF6,color:#F1F5F9   (noeud central - violet fonce)
+style NODE fill:#0E1525,stroke:#94A3B8,color:#94A3B8   (noeud tertiaire - gris)
+```
+
+Regles :
+- 1 a 3 diagrammes par article, places aux points ou un visuel aide a la comprehension
+- TOUJOURS appliquer les styles de la palette sur CHAQUE noeud
+- TOUJOURS utiliser les accents francais dans les labels des noeuds
+- Labels entre guillemets doubles : `A["Texte avec accents"]`
+- Pas de diagrammes decoratifs - chaque schema doit apporter de l'information
+
+Exemple :
+```markdown
+` ` `mermaid
+graph TD
+    A["Etape 1 : Achat"] --> B["Etape 2 : Stockage"]
+    B --> C["Etape 3 : Securisation"]
+    style A fill:#141D30,stroke:#F59E0B,color:#F1F5F9
+    style B fill:#141D30,stroke:#8B5CF6,color:#F1F5F9
+    style C fill:#141D30,stroke:#F59E0B,color:#F1F5F9
+` ` `
+```
 
 ### Patterns anti-detection IA
 
@@ -155,6 +203,32 @@ de plus, en outre, par consequent, neanmoins, toutefois, cependant, ainsi, en ef
 - "il est important de noter" → supprimer
 - "temoigne de" → montre, prouve
 - "joue un role crucial" → est important pour, compte pour
+
+### Etape 4 : Verification qualite (script bash)
+
+Apres la redaction, lancer le script de verification :
+
+```bash
+# Verifier un ou plusieurs articles
+./scripts/verify-articles.sh <slug1> [slug2] [slug3]
+
+# Verifier tous les articles
+./scripts/verify-articles.sh --all
+
+# Verifier + lancer le build Astro
+./scripts/verify-articles.sh --all --build
+```
+
+Le script verifie automatiquement :
+- **Accents** : minimum 50 caracteres accentues (sinon l'article est probablement sans accents)
+- **Mots interdits** : 0 tolerance, affiche les lignes en infraction
+- **Caracteres typo** : tirets cadratins, apostrophes typographiques, guillemets courbes
+- **Callouts** : entre 3 et 5 par article
+- **Longueur** : alerte si > 3000 mots
+- **Frontmatter** : presence du bloc `---`
+- **Build** : compilation Astro (avec `--build`)
+
+Corriger toute erreur signalee avant de considerer l'article comme termine.
 
 ## Generation d'images - Recraft V3 via fal.ai
 

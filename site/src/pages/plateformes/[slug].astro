@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
 import ReviewScoreWidget from '@/components/tools/ReviewScoreWidget';
 import ExchangeComparator from '@/components/tools/ExchangeComparator';
+import DecisionTreeExchange from '@/components/tools/DecisionTreeExchange';
 import { EXCHANGES, type ExchangeReview } from '@/data/exchange-reviews';
 import CrossLinks from '@/components/CrossLinks.astro';
 import { getLinksForExchangePage, autoLink } from '@/data/internal-links';
@@ -228,6 +229,11 @@ const currentPath = `/plateformes/${exchange.slug}`;
           </div>
         </section>
       )}
+
+      <!-- Decision Tree -->
+      <section class="mt-12">
+        <DecisionTreeExchange client:visible />
+      </section>
 
       <!-- Cross-silo links -->
       <section class="mt-10">

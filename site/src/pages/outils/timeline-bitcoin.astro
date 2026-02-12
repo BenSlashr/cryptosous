@@ -1,0 +1,150 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import BlockchainTimeline from '@/components/tools/timeline/BlockchainTimeline';
+
+const faqItems = [
+  {
+    q: 'Qu\'est-ce que le bloc Genesis de Bitcoin ?',
+    a: 'Le bloc Genesis (bloc 0) est le tout premier bloc de la blockchain Bitcoin, mine par Satoshi Nakamoto le 3 janvier 2009 a 18h15 UTC. Il contient le message "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks", une reference a la une du Times de ce jour-la. Ce bloc est code en dur dans le logiciel Bitcoin et ne peut pas etre depense.',
+  },
+  {
+    q: 'Combien de halvings Bitcoin a-t-il eu ?',
+    a: 'Bitcoin a connu 4 halvings : novembre 2012 (50 a 25 BTC), juillet 2016 (25 a 12,5 BTC), mai 2020 (12,5 a 6,25 BTC) et avril 2024 (6,25 a 3,125 BTC). Le prochain halving est prevu vers mars 2028, reduisant la recompense a 1,5625 BTC par bloc. Chaque halving a historiquement precede un cycle haussier.',
+  },
+  {
+    q: 'Quel a ete le plus haut prix de Bitcoin ?',
+    a: 'Bitcoin a depasse les 100 000 dollars pour la premiere fois en decembre 2024, porte par l\'approbation des ETF Bitcoin spot aux Etats-Unis et un contexte politique favorable. Les precedents records etaient de 69 000 $ en novembre 2021 et 20 089 $ en decembre 2017.',
+  },
+  {
+    q: 'Quelles ont ete les pires crises de Bitcoin ?',
+    a: 'Les crises les plus marquantes : la faillite de Mt. Gox en 2014 (850 000 BTC perdus, -87%), l\'eclatement de la bulle ICO fin 2017-2018 (-84%), le jeudi noir COVID en mars 2020 (-40% en une journee), et la cascade FTX/Terra/Celsius en 2022 qui a fait passer le BTC de 69 000 $ a 15 800 $ (-78%).',
+  },
+  {
+    q: 'Pourquoi le prix de Bitcoin suit des cycles de 4 ans ?',
+    a: 'Le cycle de 4 ans est lie au halving, qui divise par deux la recompense de minage tous les 210 000 blocs (environ 4 ans). Cette reduction de l\'offre nouvelle, combinee a une demande croissante, cree une pression haussiere. Le marche passe par 4 phases : accumulation, hausse, euphorie, correction. Ce modele s\'est repete a chaque cycle depuis 2012.',
+  },
+  {
+    q: 'Qu\'est-ce que la reserve strategique Bitcoin des Etats-Unis ?',
+    a: 'Le 6 mars 2025, le president Trump a signe un decret creant une reserve strategique de Bitcoin pour les Etats-Unis. Cette reserve est constituee des BTC saisis par les agences federales (FBI, DOJ, IRS) lors d\'operations contre le crime. Les Etats-Unis deviennent le premier grand pays a constituer officiellement une reserve en bitcoin.',
+  },
+];
+---
+
+<BaseLayout
+  title="Timeline Bitcoin Interactive - Histoire de 2008 a 2025 | CryptoSous"
+  description="Explorez 17 ans d'histoire Bitcoin sur une timeline interactive. Cours BTC en overlay, halvings, crises, adoption institutionnelle. 40 evenements cles de 2008 a 2025."
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-gold transition-colors cursor-pointer">Outils</a>
+        <span>/</span>
+        <span class="text-text-secondary">Timeline Bitcoin</span>
+      </nav>
+
+      <!-- H1 + Intro -->
+      <div class="mb-10">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          <span class="text-gradient-gold">Timeline Bitcoin</span> Interactive
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-2xl">
+          17 ans d'histoire de Bitcoin sur une frise chronologique visuelle. Naviguez entre les halvings, les crises, les jalons d'adoption et les records de prix.
+        </p>
+      </div>
+
+      <!-- Interactive Widget (React Island) -->
+      <BlockchainTimeline client:load />
+
+      <!-- SEO Content -->
+      <section class="mt-16 space-y-8 max-w-4xl">
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">L'histoire de Bitcoin en dates cles</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Depuis la publication du whitepaper par Satoshi Nakamoto le 31 octobre 2008 jusqu'a la reserve strategique americaine de 2025, Bitcoin a traverse 17 annees de crises, de records et de transformations. Chaque evenement marque une etape dans la maturation d'un actif passe de zero a plus de 100 000 dollars.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            La timeline ci-dessus represente les 40 evenements les plus marquants, superposes a la courbe du prix BTC en echelle logarithmique. Cette echelle permet de visualiser les mouvements des premieres annees (ou le Bitcoin valait quelques centimes) aussi clairement que les variations recentes autour des 100 000 dollars.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Les halvings : le metronome de Bitcoin</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Tous les 210 000 blocs (environ 4 ans), la recompense de minage est divisee par deux. Ce mecanisme, programme dans le code source de Bitcoin, reduit progressivement l'emission de nouveaux BTC. En 2009, chaque bloc rapportait 50 BTC. Apres le 4e halving d'avril 2024, cette recompense est tombee a 3,125 BTC.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            Historiquement, chaque halving a precede un cycle haussier : +9 483% apres le premier, +2 991% apres le deuxieme, +711% apres le troisieme. Le quatrieme halving s'est produit dans un contexte inedit avec les ETF spot et l'interet des Etats, rendant les comparaisons directes avec les cycles precedents plus delicates.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Crises et resilience</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Bitcoin a survit a la faillite de Mt. Gox (2014), a l'interdiction chinoise (2017), au krach COVID (2020) et a la cascade d'effondrements de 2022 (Terra, Celsius, FTX). A chaque crise, le cours a chute de 78% a 94% par rapport a son plus haut. A chaque fois, il a fini par depasser son precedent record.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            Cette capacite de recuperation tient a la nature decentralisee du reseau : aucun acteur unique ne peut le fermer. Les crises ont meme renforce le protocole en eliminant les acteurs fragiles et en poussant l'industrie vers plus de transparence et de regulation.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">L'ere institutionnelle (2020-2025)</h2>
+          <p class="text-text-secondary leading-relaxed">
+            L'achat de MicroStrategy en aout 2020 a marque un tournant. Puis Tesla, puis les ETF spot approuves en janvier 2024, avec plus de 10 milliards de dollars d'afflux en quelques semaines. Fin 2024, Bitcoin a depasse les 100 000 dollars pour la premiere fois.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            En 2025, le president Trump a cree une reserve strategique de Bitcoin pour les Etats-Unis. El Salvador avait ouvert la voie en 2021 en faisant du BTC une monnaie legale. Bitcoin n'est plus un actif marginal : c'est un instrument reconnu par les plus grandes institutions financieres et les Etats.
+          </p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="mt-16 max-w-4xl">
+        <h2 class="font-display font-700 text-h2 mb-8">Questions frequentes</h2>
+        <div class="space-y-4">
+          {faqItems.map((item) => (
+            <details class="group rounded-card border border-border bg-surface-raised/30 overflow-hidden">
+              <summary class="flex items-center justify-between p-5 cursor-pointer text-text-primary font-medium hover:text-gold transition-colors">
+                {item.q}
+                <svg class="w-5 h-5 text-text-muted group-open:rotate-180 transition-transform flex-shrink-0 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-text-secondary leading-relaxed">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
+      <div class="mt-12 p-5 rounded-card border border-border bg-surface/50 text-xs text-text-muted leading-relaxed max-w-4xl">
+        <strong class="text-text-secondary">Note :</strong> Les prix affiches sont des valeurs mensuelles approximatives basees sur les donnees historiques. Les prix associes aux evenements sont ceux du jour de l'evenement. Cette timeline est un outil educatif et ne constitue pas un conseil en investissement.
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    })),
+  })} />
+</BaseLayout>

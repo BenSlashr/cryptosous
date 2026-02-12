@@ -1,0 +1,107 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  branches: CollectionEntry<'bitcoin'>[];
+  allPages: CollectionEntry<'bitcoin'>[];
+}
+
+const { branches, allPages } = Astro.props;
+
+function entryIdToSlug(id: string): string {
+  if (id === 'index') return '';
+  if (id.endsWith('/index')) return id.slice(0, -'/index'.length);
+  return id;
+}
+
+const branchMeta: Record<string, { icon: string; blurb: string }> = {
+  'bitcoin-debutant': {
+    icon: '\u{1F4D6}',
+    blurb: "Les bases de Bitcoin pour bien demarrer.",
+  },
+  'acheter-bitcoin': {
+    icon: '\u{1F4B0}',
+    blurb: "Plateformes, frais et tutoriels pas a pas.",
+  },
+  'vendre-bitcoin': {
+    icon: '\u{1F4B8}',
+    blurb: "Convertir ses BTC en euros, envoyer et payer.",
+  },
+  'comment-fonctionne-bitcoin': {
+    icon: '\u{2699}\u{FE0F}',
+    blurb: "Blockchain, proof of work, transactions.",
+  },
+  'lightning-network-bitcoin': {
+    icon: '\u{26A1}',
+    blurb: "Paiements instantanes sur le reseau Lightning.",
+  },
+  'meilleurs-portefeuilles-bitcoin': {
+    icon: '\u{1F510}',
+    blurb: "Hardware wallets, logiciels et cold storage.",
+  },
+  'miner-bitcoin': {
+    icon: '\u{26CF}\u{FE0F}',
+    blurb: "Rentabilite, materiel ASIC et pools de minage.",
+  },
+  'securite-bitcoin': {
+    icon: '\u{1F6E1}\u{FE0F}',
+    blurb: "Arnaques, seed phrase et heritage crypto.",
+  },
+  'investir-bitcoin': {
+    icon: '\u{1F4C8}',
+    blurb: "DCA, cycles, or vs Bitcoin, ETF et strategie.",
+  },
+  'reglementation-bitcoin': {
+    icon: '\u{2696}\u{FE0F}',
+    blurb: "Fiscalite, MiCA, KYC et obligations legales.",
+  },
+  'histoire-bitcoin': {
+    icon: '\u{1F3DB}\u{FE0F}',
+    blurb: "De Satoshi Nakamoto aux ETF spot.",
+  },
+};
+
+const branchData = branches.map((branch) => {
+  const slug = entryIdToSlug(branch.id);
+  const meta = branchMeta[slug];
+  const guideCount = allPages.filter(
+    (p) => p.data.type === 'guide' && p.data.parent === slug
+  ).length;
+  const shortTitle = branch.data.title
+    .replace(/^(Les meilleurs |L'histoire de |Comment fonctionne |Réglementation et fiscalité du )/, '')
+    .replace(/ :.*$/, '')
+    .replace(/ en 2025$/, '');
+  return { slug, meta, guideCount, shortTitle };
+});
+---
+
+<section class="py-16 border-t border-border">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-10">
+      <h2 class="font-display font-800 text-2xl sm:text-3xl tracking-tight mb-3">
+        Explorer par <span class="text-gradient-gold">theme</span>
+      </h2>
+      <p class="text-text-secondary max-w-xl">
+        {branches.length} themes couvrant tous les aspects de Bitcoin, du debutant a l'expert.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      {branchData.map(({ slug, meta, guideCount, shortTitle }) => (
+        <a
+          href={`/bitcoin/${slug}`}
+          class="group p-4 rounded-xl border border-border hover:border-gold/30 bg-surface-raised/20 hover:bg-surface-hover/30 transition-all cursor-pointer"
+        >
+          <div class="text-2xl mb-2">{meta?.icon}</div>
+          <h3 class="font-display font-700 text-sm mb-1 group-hover:text-gold transition-colors">
+            {shortTitle}
+          </h3>
+          <p class="text-xs text-text-muted leading-relaxed mb-2">{meta?.blurb}</p>
+          <span class="text-xs text-text-muted">
+            {guideCount > 0 ? `${guideCount} guide${guideCount > 1 ? 's' : ''}` : 'Bientot'}
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

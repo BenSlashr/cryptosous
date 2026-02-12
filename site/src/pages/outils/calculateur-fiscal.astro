@@ -1,0 +1,165 @@
+---
+import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import TaxCalculator from '@/components/tools/TaxCalculator';
+
+const faqItems = [
+  {
+    q: 'Comment sont imposees les plus-values crypto en France ?',
+    a: 'Les plus-values sur actifs numeriques (crypto vers monnaie fiat) sont imposees selon l\'article 150 VH bis du CGI. Le regime par defaut est le PFU (Prelevement Forfaitaire Unique) a 30% en 2025, passe a 31,4% en 2026 suite a la hausse des prelevements sociaux. Vous pouvez opter pour le bareme progressif de l\'IR si c\'est plus avantageux.',
+  },
+  {
+    q: 'Qu\'est-ce que la methode PMPA ?',
+    a: 'Le Prix Moyen Pondere d\'Acquisition (PMPA) est la methode legale pour calculer vos plus-values crypto en France. La formule est : Plus-value = Prix de cession - (Prix total d\'acquisition x Prix de cession / Valeur globale du portefeuille). Cette methode prend en compte l\'ensemble de votre portefeuille, pas seulement la crypto vendue.',
+  },
+  {
+    q: 'Qu\'est-ce que le seuil de 305 euros ?',
+    a: 'Si le total de vos cessions (ventes crypto vers euros) sur une annee ne depasse pas 305 euros, vous etes exonere d\'impot sur les plus-values. Attention : c\'est le montant total des ventes qui compte, pas la plus-value realisee.',
+  },
+  {
+    q: 'Les echanges crypto-crypto sont-ils imposables ?',
+    a: 'Non. En France, seules les conversions de crypto vers monnaie fiat (euros, dollars) declenchent une imposition. Echanger du Bitcoin contre de l\'Ethereum, ou utiliser un stablecoin comme intermediaire, n\'est pas un fait generateur d\'impot.',
+  },
+  {
+    q: 'Mes donnees sont-elles securisees ?',
+    a: 'Oui. Cet outil fonctionne a 100% dans votre navigateur. Aucune donnee n\'est envoyee a un serveur. Vos transactions ne quittent jamais votre appareil. Le code source est verifiable.',
+  },
+  {
+    q: 'PFU ou bareme progressif : comment choisir ?',
+    a: 'Le PFU est avantageux si votre taux marginal d\'imposition depasse 12,8%. En pratique, le bareme progressif est plus interessant si vos revenus sont faibles (tranche a 0% ou 11%). Notre outil compare les deux options pour vous aider a choisir. Attention : l\'option bareme s\'applique a tous vos revenus du capital.',
+  },
+];
+---
+
+<BaseLayout
+  title="Calculateur Fiscal Crypto France - Impot Plus-Value PMPA Gratuit | CryptoSous"
+  description="Calculez gratuitement vos impots sur les plus-values crypto en France. Methode PMPA officielle, PFU 2025/2026, import CSV Binance/Coinbase/Kraken. 100% gratuit, 100% prive."
+>
+  <Navbar />
+
+  <main class="pt-32 pb-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-8" aria-label="Fil d'ariane">
+        <a href="/" class="hover:text-gold transition-colors cursor-pointer">Accueil</a>
+        <span>/</span>
+        <a href="/outils" class="hover:text-gold transition-colors cursor-pointer">Outils</a>
+        <span>/</span>
+        <span class="text-text-secondary">Calculateur Fiscal</span>
+      </nav>
+
+      <!-- H1 + Intro -->
+      <div class="mb-10">
+        <h1 class="font-display font-800 text-display leading-[1.1] mb-4 tracking-tight">
+          Calculateur <span class="text-gradient-gold">Fiscal Crypto</span>
+        </h1>
+        <p class="text-body-lg text-text-secondary max-w-xl">
+          Calculez vos impots sur les plus-values crypto selon la methode PMPA officielle.
+          Gratuit, sans inscription, 100% prive - vos donnees restent sur votre appareil.
+        </p>
+      </div>
+
+      <!-- Interactive Widget (React Island) -->
+      <TaxCalculator client:load />
+
+      <!-- SEO Content -->
+      <section class="mt-16 space-y-8">
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">La fiscalite crypto en France en 2025-2026</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Depuis 2019, les plus-values sur actifs numeriques sont soumises a l'impot en France (article 150 VH bis du CGI). Chaque vente de crypto contre des euros declenche un calcul de plus-value. Le regime par defaut est le PFU (Prelevement Forfaitaire Unique) : 12,8% d'impot sur le revenu + 17,2% de prelevements sociaux en 2025, soit 30% au total. En 2026, les prelevements sociaux passent a 18,6%, portant le PFU a 31,4%.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            Bonne nouvelle : si vos ventes totales sur l'annee ne depassent pas 305 euros, vous etes exonere. Et les echanges crypto-crypto ne sont pas imposables - seul le passage vers de la monnaie fiat compte.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Comment fonctionne la methode PMPA ?</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Le PMPA (Prix Moyen Pondere d'Acquisition) est la methode de calcul imposee par l'administration fiscale. Elle considere l'ensemble de votre portefeuille crypto, pas seulement l'actif vendu. La formule pour chaque cession est :
+          </p>
+          <div class="my-4 p-4 rounded-lg bg-surface-raised/50 border border-border font-mono text-sm text-text-primary">
+            Plus-value = Prix de cession - (PTA x Prix de cession / Valeur globale du portefeuille)
+          </div>
+          <ul class="space-y-2 text-text-secondary text-sm">
+            <li class="flex gap-2">
+              <span class="text-gold font-bold">PTA</span>
+              <span>Prix Total d'Acquisition : la somme de tous vos achats en euros depuis le debut.</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="text-gold font-bold">VGP</span>
+              <span>Valeur Globale du Portefeuille : la valeur de toutes vos cryptos au moment de la vente.</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="text-gold font-bold">PC</span>
+              <span>Prix de Cession : le montant en euros que vous recevez lors de la vente.</span>
+            </li>
+          </ul>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            Apres chaque cession, le PTA diminue proportionnellement a la fraction vendue. C'est ce que notre outil calcule automatiquement, etape par etape.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">PFU ou bareme progressif : quel choix ?</h2>
+          <p class="text-text-secondary leading-relaxed">
+            Par defaut, vos plus-values crypto sont taxees au PFU (flat tax). Mais vous pouvez opter pour le bareme progressif de l'impot sur le revenu, qui peut etre plus avantageux si vos revenus sont modestes. Le bareme integre vos plus-values crypto dans vos revenus globaux et applique les tranches de l'IR (0%, 11%, 30%, 41%, 45%), auxquelles s'ajoutent les prelevements sociaux.
+          </p>
+          <p class="text-text-secondary leading-relaxed mt-3">
+            En pratique, le bareme progressif est interessant si votre taux marginal d'imposition est inferieur a 12,8%. Notre outil compare les deux options avec votre situation reelle.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-display font-700 text-h2 mb-4">Le seuil de 305 euros</h2>
+          <p class="text-text-secondary leading-relaxed">
+            C'est un point souvent mal compris. Le seuil de 305 euros porte sur le montant total de vos cessions (ventes), pas sur les plus-values. Si vous avez vendu pour 300 euros de crypto dans l'annee - meme avec une plus-value de 200 euros - vous ne payez rien. En revanche, des que vos ventes depassent 305 euros au total, l'ensemble de vos plus-values devient imposable.
+          </p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="mt-16">
+        <h2 class="font-display font-700 text-h2 mb-8">Questions frequentes</h2>
+        <div class="space-y-4">
+          {faqItems.map((item) => (
+            <details class="group rounded-card border border-border bg-surface-raised/30 overflow-hidden">
+              <summary class="flex items-center justify-between p-5 cursor-pointer text-text-primary font-medium hover:text-gold transition-colors">
+                {item.q}
+                <svg class="w-5 h-5 text-text-muted group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-text-secondary leading-relaxed">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
+      <div class="mt-12 p-5 rounded-card border border-border bg-surface/50 text-xs text-text-muted leading-relaxed">
+        <strong class="text-text-secondary">Avertissement :</strong> Cet outil est fourni a titre informatif et pedagogique. Il ne constitue pas un conseil fiscal, juridique ou financier. Les calculs sont bases sur la legislation en vigueur (article 150 VH bis du CGI) mais peuvent ne pas couvrir toutes les situations particulieres. Consultez un professionnel pour votre declaration fiscale. Aucune donnee n'est collectee ni transmise - tout reste dans votre navigateur.
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    })),
+  })} />
+</BaseLayout>

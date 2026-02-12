@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
 import ReviewScoreWidget from '@/components/tools/ReviewScoreWidget';
 import WalletComparator from '@/components/tools/WalletComparator';
+import DecisionTreeWallet from '@/components/tools/DecisionTreeWallet';
 import { WALLETS, type WalletReview } from '@/data/wallet-reviews';
 import CrossLinks from '@/components/CrossLinks.astro';
 import { getLinksForWalletPage, autoLink } from '@/data/internal-links';
@@ -234,6 +235,11 @@ const currentPath = `/wallets/${wallet.slug}`;
           </div>
         </section>
       )}
+
+      <!-- Decision Tree -->
+      <section class="mt-12">
+        <DecisionTreeWallet client:visible />
+      </section>
 
       <!-- Cross-silo links -->
       <section class="mt-10">

@@ -7,6 +7,7 @@ import { getExchangesSortedByScore, EXCHANGES } from './exchange-reviews';
 import { getWalletsSortedByScore, WALLETS } from './wallet-reviews';
 import { COMPARISON_COINS, getCoinSlug, CRYPTO_SPECS } from './comparison-templates';
 import { CRYPTO_SEO } from './converter-seo';
+import { getGlossaireMatchEntries } from './glossaire-terms';
 
 // ── Types ──────────────────────────────────────────────────
 
@@ -264,6 +265,7 @@ export function getLinksForGlossaryPage(termSlug: string, relatedCryptos: string
     links: [
       { href: '/outils/calculateur-dca', label: 'Calculateur DCA' },
       { href: '/outils/convertisseur', label: 'Convertisseur' },
+      { href: '/outils/calculateur-fiscal', label: 'Calculateur Fiscal' },
     ],
   });
 
@@ -429,6 +431,12 @@ const BITCOIN_BRANCH_LINKS: Record<string, LinkGroup[]> = {
         { href: '/glossaire/defi', label: 'DeFi' },
       ],
     },
+    {
+      title: 'Outils',
+      links: [
+        { href: '/outils/calculateur-fiscal', label: 'Calculateur Fiscal' },
+      ],
+    },
   ],
   lightning: [
     {
@@ -492,6 +500,12 @@ const BITCOIN_BRANCH_LINKS: Record<string, LinkGroup[]> = {
       title: 'Plateformes',
       links: getTopExchanges(3).map(e => ({ href: `/plateformes/${e.slug}`, label: e.name })),
     },
+    {
+      title: 'Outils',
+      links: [
+        { href: '/outils/calculateur-fiscal', label: 'Calculateur Fiscal' },
+      ],
+    },
   ],
 };
 
@@ -535,35 +549,8 @@ let _termDictionary: TermEntry[] | null = null;
 function buildTermDictionary(): TermEntry[] {
   const entries: TermEntry[] = [];
 
-  // Glossary terms
-  const glossaryTerms: Array<{ match: string; slug: string }> = [
-    { match: 'blockchain', slug: 'blockchain' },
-    { match: 'proof of stake', slug: 'proof-of-stake' },
-    { match: 'PoS', slug: 'proof-of-stake' },
-    { match: 'staking', slug: 'staking' },
-    { match: 'DeFi', slug: 'defi' },
-    { match: 'DEX', slug: 'dex' },
-    { match: 'smart contract', slug: 'smart-contract' },
-    { match: 'smart contracts', slug: 'smart-contract' },
-    { match: 'gas fees', slug: 'gas-fees' },
-    { match: 'halving', slug: 'halving' },
-    { match: 'layer 2', slug: 'layer-2' },
-    { match: 'layer-2', slug: 'layer-2' },
-    { match: 'L2', slug: 'layer-2' },
-    { match: 'NFT', slug: 'nft' },
-    { match: 'NFTs', slug: 'nft' },
-    { match: 'seed phrase', slug: 'seed-phrase' },
-    { match: 'tokenomics', slug: 'tokenomics' },
-    { match: 'yield farming', slug: 'yield-farming' },
-    { match: 'liquidity pool', slug: 'liquidity-pool' },
-    { match: 'airdrop', slug: 'airdrop' },
-    { match: 'airdrops', slug: 'airdrop' },
-    { match: 'DAO', slug: 'dao' },
-    { match: 'MiCA', slug: 'mica' },
-    { match: 'wallet', slug: 'wallet' },
-  ];
-
-  for (const t of glossaryTerms) {
+  // Glossary terms (from shared source)
+  for (const t of getGlossaireMatchEntries()) {
     entries.push({ match: t.match, href: `/glossaire/${t.slug}` });
   }
 
